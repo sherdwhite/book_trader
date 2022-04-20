@@ -1,0 +1,30 @@
+.item {
+  height: 250px;
+  width: 450px;
+}
+
+.body {
+  color: var(--red);
+  overflow: hidden;
+  font-size: 20px;
+  line-height: 1em;
+}
+
+.body p {
+  color: var(--iron);
+}
+
+.cover {
+  float: left;
+  margin-right: 20px;
+}
+
+.cover img {
+  display: block;
+}
+
+.book-title {
+  font-size: 1.25rem;
+  line-height: 1rem;
+  margin: 0;
+}
