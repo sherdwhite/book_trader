@@ -26,6 +26,12 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
+    def get_queryset(self):
+        queryset = super(BookViewSet, self).get_queryset()
+
+        queryset = queryset.order_by('-average_rating')
+        return queryset
+
     def create(self, request, *args, **kwargs):
         average_rating = request.data.get('average_rating')
         if not average_rating:

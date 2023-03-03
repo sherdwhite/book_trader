@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.11"
 services:
   web:
     build: .
@@ -6,11 +6,11 @@ services:
       - 8000:8000
     volumes:
       - .:/voltronflamingo/
-    entrypoint: /usr/local/bin/python3.7
+    entrypoint: /usr/local/bin/python3.11
     command: manage.py runserver 0.0.0.0:8000
   tests:
     build: .
     volumes:
       - .:/voltronflamingo/
-    entrypoint: /usr/local/bin/python3.7
+    entrypoint: /usr/local/bin/python3.11
     command: manage.py test
