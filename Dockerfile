@@ -1,4 +1,4 @@
-FROM python:3.7.5
+FROM python:3.11.2
 WORKDIR /voltronflamingo/
 ENV PYTHONPATH /voltronflamingo/
 ENV DJANGO_SETTINGS_MODULE voltronflamingo.settings
