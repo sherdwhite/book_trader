@@ -1,16 +1,31 @@
 version: "3.11"
+
 services:
-  web:
-    build: .
-    ports:
-      - 8000:8000
-    volumes:
-      - .:/voltronflamingo/
-    entrypoint: /usr/local/bin/python3.11
-    command: manage.py runserver 0.0.0.0:8000
-  tests:
-    build: .
-    volumes:
-      - .:/voltronflamingo/
-    entrypoint: /usr/local/bin/python3.11
-    command: manage.py test
+    web:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      ports:
+        - 8000:8000
+      volumes:
+        - .:/oreilly_code_challenge/
+      entrypoint: /usr/local/bin/python3.11
+      command: ./manage.py runserver 0.0.0.0:8000
+
+    tests:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      volumes:
+        - .:/oreilly_code_challenge/
+      entrypoint: /usr/local/bin/python3.11
+      command: ./manage.py test
+
+    frontend:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      volumes:
+        - .:/oreilly_code_challenge/
+      working_dir: /oreilly_code_challenge/static
+      command: npm run watch

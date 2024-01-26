@@ -36,6 +36,7 @@
   "dependencies": {},
   "scripts": {
     "eslint": "eslint \"{*,**/*}.{js,jsx}\" --ignore-path .gitignore --quiet",
+    "start": "npm run watch",
     "test": "jest",
     "test:watch": "jest --watch",
     "build": "webpack --mode production",
