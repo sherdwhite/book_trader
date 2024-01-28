@@ -1,0 +1,7 @@
+autoflake
+black==23.9.1
+django-debug-toolbar
+django-stubs
+Django==4.1.7
+djangorestframework==3.14.0
+flake8

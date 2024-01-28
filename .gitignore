@@ -104,6 +104,7 @@ coverage
 
 # vscode
 .devcontainer.json
+.history
 
 # pycharm
 .idea
