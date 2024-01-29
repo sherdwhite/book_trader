@@ -1,0 +1,150 @@
+.BookItem-item-L5JzA {
+  height: 250px;
+  width: 450px;
+}
+
+.BookItem-body-lYbuQ {
+  color: var(--red);
+  overflow: hidden;
+  font-size: 20px;
+  line-height: 1em;
+}
+
+.BookItem-body-lYbuQ p {
+  color: var(--iron);
+}
+
+.BookItem-cover-YzRFb {
+  float: left;
+  margin-right: 20px;
+}
+
+.BookItem-cover-YzRFb img {
+  display: block;
+}
+
+.BookItem-book-title-EeL8r {
+  font-size: 1.25rem;
+  line-height: 1rem;
+  margin: 0;
+}
+.BookList-list-yXWal li {
+    display: inline-block;
+    padding-left: 50px;
+}
+
+.PublisherItem-item-VB7Im {
+  height: 250px;
+  width: 450px;
+}
+
+.PublisherItem-body-nQAiz {
+  color: var(--red);
+  overflow: hidden;
+  font-size: 20px;
+  line-height: 1em;
+}
+
+.PublisherItem-body-nQAiz p {
+  color: var(--iron);
+}
+
+.PublisherItem-publisher-name-QWGoK {
+  font-size: 1.25rem;
+  line-height: 1rem;
+  margin: 0;
+}
+.PublisherList-list-RDDii li {
+    display: inline-block;
+    padding-left: 50px;
+}
+
+:root {
+  --red: #B9002D;
+  --iron: #3D3B49;
+}
+
+body {
+  font: 16px/26px 'sans-serif';
+  color: var(--iron);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 54px;
+  font-weight: 100;
+  line-height: 1em;
+  font-family: 'monospace';
+}
+
+h2 {
+  font-size: 32px;
+  line-height: 1.25em;
+  font-family: 'sans-serif';
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 30px;
+  line-height: 1em;
+}
+
+h4 {
+  font-size: 28px;
+  line-height: 1em;
+}
+
+h5 {
+  font-size: 20px;
+  line-height: 1em;
+}
+
+h6 {
+  font-size: 18px;
+  line-height: 1em;
+  font-weight: 100;
+}
+
+p,
+.index-paragraph-VMoL1 {
+  font-size: 16px;
+  line-height: 26px;
+}
+
+p.index-medium-kDM6Q,
+.index-paragraph-VMoL1.index-medium-kDM6Q {
+  font-size: 14px;
+  line-height: 22px;
+}
+
+p.index-small-BGzW5,
+.index-paragraph-VMoL1.index-small-BGzW5 {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+p.index-tiny-Bog26,
+.index-paragraph-VMoL1.index-tiny-Bog26 {
+  font-size: 10px;
+  line-height: 16px;
+}
+
+a {
+  color: var(--red);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.FilterBar-nav-EDBeY li {
+    display: inline-block;
+    margin-right: 30px;
+}
