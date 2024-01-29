@@ -15,7 +15,7 @@ module.exports = {
   moduleNameMapper: {
     '\\.(css)$': 'identity-obj-proxy',
   },
-  rootDir: './static/js/src',
+  rootDir: './frontend/src',
   setupFiles: [
     'regenerator-runtime/runtime',
   ],

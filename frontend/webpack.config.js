@@ -6,7 +6,7 @@ module.exports = {
     index: [
       'core-js/stable',
       'regenerator-runtime/runtime',
-      './static/js/src/index.js'
+      './src/index.js'
     ]
   },
   resolve: {
@@ -25,7 +25,16 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        include: path.resolve('static/js/src'),
+        include: path.resolve('frontend/src'),
+        use: [
+          {
+            loader: 'babel-loader'
+          }
+        ]
+      },
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: 'babel-loader'
@@ -60,9 +69,9 @@ module.exports = {
         ]
       }
     ]
-  },
+  },  
   output: {
-    path: path.resolve(__dirname, 'static/js/build'),
+    path: path.resolve(__dirname, 'frontend/build'),
     filename: 'main.js',
     library: 'voltron',
     libraryTarget: 'var'
