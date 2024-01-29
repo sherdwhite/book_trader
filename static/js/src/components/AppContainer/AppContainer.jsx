@@ -3,7 +3,7 @@ import { BookList } from '../BookList/BookList';
 import { PublisherList } from "../PublisherList/PublisherList";
 import { getBooks, getPublishers } from '../../services/api';
 
-import '../main.css';
+import '../index.css';
 import FilterBar from "../FilterBar/FilterBar";
 
 export const AppContainer = props => {

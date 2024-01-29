@@ -1,6 +1,9 @@
 # Use the official Python image as the base image
 FROM python:3.11.2
 
+# Upgrade to the latest version of pip
+RUN pip install --upgrade pip
+
 # Set working directory for the Django project
 WORKDIR /oreilly_code_challenge/
 

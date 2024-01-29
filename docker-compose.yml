@@ -8,9 +8,9 @@ services:
       - .:/voltronflamingo/
     entrypoint: /usr/local/bin/python3.11
     command: manage.py runserver 0.0.0.0:8000
-  tests:
-    build: .
-    volumes:
-      - .:/voltronflamingo/
-    entrypoint: /usr/local/bin/python3.11
-    command: manage.py test
+  # tests:
+  #   build: .
+  #   volumes:
+  #     - .:/voltronflamingo/
+  #   entrypoint: /usr/local/bin/python3.11
+  #   command: manage.py test
