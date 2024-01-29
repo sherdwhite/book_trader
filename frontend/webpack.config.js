@@ -71,7 +71,7 @@ module.exports = {
     ]
   },  
   output: {
-    path: path.resolve(__dirname, 'frontend/build'),
+    path: path.resolve(__dirname, 'build'),
     filename: 'main.js',
     library: 'voltron',
     libraryTarget: 'var'
