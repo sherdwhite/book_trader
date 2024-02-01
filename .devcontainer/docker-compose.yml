@@ -1,16 +1,20 @@
 version: "3.11"
 services:
-  web:
-    build: .
+  backend:
+    build: ./backend
     ports:
       - 8000:8000
-    volumes:
-      - .:/voltronflamingo/
     entrypoint: /usr/local/bin/python3.11
     command: manage.py runserver 0.0.0.0:8000
-  tests:
-    build: .
+  frontend:
+    build: ./frontend
     volumes:
-      - .:/voltronflamingo/
-    entrypoint: /usr/local/bin/python3.11
-    command: manage.py test
+      - ./frontend:/frontend/build
+    depends_on:
+      - backend
+  # tests:
+  #   build: .
+  #   volumes:
+  #     - .:/voltronflamingo/
+  #   entrypoint: /usr/local/bin/python3.11
+  #   command: manage.py test

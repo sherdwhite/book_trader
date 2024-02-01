@@ -1,16 +1,13 @@
 version: "3.11"
 services:
   backend:
-    build: .
+    build: ./backend
     ports:
       - 8000:8000
-    volumes:
-      - .:/voltronflamingo/
     entrypoint: /usr/local/bin/python3.11
     command: manage.py runserver 0.0.0.0:8000
   frontend:
-    build:
-      context: ./frontend
+    build: ./frontend
     volumes:
       - ./frontend:/frontend/build
     depends_on:

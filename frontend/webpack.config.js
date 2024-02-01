@@ -71,7 +71,7 @@ module.exports = {
     ]
   },  
   output: {
-    path: path.resolve(__dirname, '..', 'static', 'build'),
+    path: path.resolve(__dirname, '..', 'backend', 'static', 'build'),
     filename: 'main.js',
     library: 'voltron',
     libraryTarget: 'var'

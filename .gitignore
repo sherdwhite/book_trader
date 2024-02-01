@@ -95,7 +95,7 @@ local_settings.py
 
 newrelic.ini
 
-db.sqlite3
+backend/db.sqlite3
 
 # node
 node_modules

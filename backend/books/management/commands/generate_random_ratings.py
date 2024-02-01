@@ -4,7 +4,7 @@ import random
 from django.contrib.auth.models import User
 from django.core.management import BaseCommand
 
-from books.models import Book, Rating
+from backend.books.models import Book, Rating
 
 
 logger = logging.getLogger(__name__)
