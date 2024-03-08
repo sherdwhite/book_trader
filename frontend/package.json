@@ -1,7 +1,7 @@
 {
-  "name": "voltronflamingo",
+  "name": "booktrader",
   "version": "0.1.0",
-  "author": "O'Reilly Media, Inc",
+  "author": "Sherd White",
   "devDependencies": {
     "@babel/core": "^7.16.7",
     "@babel/eslint-parser": "^7.16.5",

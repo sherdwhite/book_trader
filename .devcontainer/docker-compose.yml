@@ -15,6 +15,6 @@ services:
   # tests:
   #   build: .
   #   volumes:
-  #     - .:/voltronflamingo/
+  #     - .:/booktrader/
   #   entrypoint: /usr/local/bin/python3.11
   #   command: manage.py test

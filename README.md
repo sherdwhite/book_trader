@@ -1,17 +1,5 @@
-# VoltronFlamingo
-Below you will find basic setup and deployment instructions for the voltronflamingo project.
-
-## The Python/Django Tasks
-1. Build an endpoint for creating user ratings on books
-2. Add an average_rating field that comes back from GET requests on books (both list and detail endpoints are fine)
-
-## The Javascript/React Tasks (optional)
-Many of our backend services have a corresponding frontend component. If you
-have time and the inclination to demonstrate your abilities with with frontend
-applications below are some tasks you may choose to perform:
-
-1. Update the BookItem component to enable a user to rate a book.
-2. Create a component that displays publishers.
+# Book Trader
+Below you will find basic setup and deployment instructions for the book trader project.
 
 ## Setup
 

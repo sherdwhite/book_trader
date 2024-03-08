@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'voltronflamingo.urls'
+ROOT_URLCONF = 'booktrader.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'voltronflamingo.wsgi.application'
+WSGI_APPLICATION = 'booktrader.wsgi.application'
 
 
 # Database

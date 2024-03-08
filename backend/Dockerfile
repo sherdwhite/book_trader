@@ -6,7 +6,7 @@ RUN pip install --upgrade pip
 
 # Set environment variables for Django
 ENV PYTHONPATH /oreilly_code_challenge/backend/
-ENV DJANGO_SETTINGS_MODULE voltronflamingo.settings
+ENV DJANGO_SETTINGS_MODULE booktrader.settings
 
 # Copy the entire project to the container
 COPY . /backend
