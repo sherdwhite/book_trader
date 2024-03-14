@@ -4,23 +4,21 @@ services:
     build: ./backend
     ports:
       - 8000:8000
-    entrypoint: /usr/local/bin/python3.11
     volumes:
       - .:/workspaces/booktrader
     command: sh -c "pip install -r requirements.txt && python manage.py runserver 0.0.0.0:8000"
     working_dir: /workspaces/booktrader/backend
-    # command: manage.py runserver 0.0.0.0:8000
-  frontend:
-    image: node:alpine
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/workspaces/booktrader
-    working_dir: /workspaces/booktrader/frontend
-    command: sh -c "npm install && npm start"
-    depends_on:
-      - backend
+  # frontend:
+  #   image: node:alpine
+  #   build: ./frontend
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - .:/workspaces/booktrader
+  #   working_dir: /workspaces/booktrader/frontend
+  #   command: sh -c "npm install && npm start"
+  #   depends_on:
+  #     - backend
   # tests:
   #   build: .
   #   volumes:
