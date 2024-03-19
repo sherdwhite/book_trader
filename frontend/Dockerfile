@@ -1,14 +1,17 @@
 # Use the official Node.js image as the base image
 FROM node:alpine
 
-# Set working directory for the frontend project
+# Set the working directory in the container to /frontend
 WORKDIR /frontend
 
-# Copy the entire frontend project to the container
+# Copy the entire project to the container
 COPY . .
 
-# Install dependencies
+# Install any needed packages specified in package.json
 RUN npm install
 
-# Build and run the frontend project
+# Make port 3000 available to the world outside this container
+EXPOSE 3000
+
+# Run the app when the container launches
 CMD ["npm", "run", "build"]

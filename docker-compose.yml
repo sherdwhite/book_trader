@@ -1,20 +1,33 @@
-version: "3.11"
+version: '3'
 services:
   backend:
     build: ./backend
     ports:
       - 8000:8000
+    volumes:
+      - .:/booktrader/backend/
     entrypoint: /usr/local/bin/python3.11
     command: manage.py runserver 0.0.0.0:8000
   frontend:
     build: ./frontend
+    ports:
+      - 3000:3000
     volumes:
-      - ./frontend:/frontend/build
+      - .:/booktrader/frontend/build
     depends_on:
       - backend
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
   # tests:
   #   build: .
   #   volumes:
   #     - .:/booktrader/
   #   entrypoint: /usr/local/bin/python3.11
   #   command: manage.py test
+volumes:
+  postgres_data:  
+
