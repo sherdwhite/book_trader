@@ -2,7 +2,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from backend.books.models import Book, Author, Publisher, Rating
+from booktrader.books.models import Book, Author, Publisher, Rating
 
 
 class TestBooks(TestCase):

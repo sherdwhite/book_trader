@@ -1,27 +1,27 @@
-version: "3"
+version: '3'
+
 services:
-  backend:
-    build: ./backend
-    ports:
-      - 8000:8000
+  workspace:
+    ports: 
+     - 8000:8000
+    environment:
+      DB_ENGINE: django.db.backends.postgresql
+      DB_USER: postgres
+      DB_NAME: postgres
+      DB_HOST: db
+      DB_PASSWORD: dbpassword
+    build: 
+      context: ..
+      dockerfile: book-trader/.devcontainer/Dockerfile
     volumes:
-      - .:/workspaces/booktrader
-    command: sh -c "pip install -r requirements.txt && python manage.py runserver 0.0.0.0:8000"
-    working_dir: /workspaces/booktrader/backend
-  # frontend:
-  #   image: node:alpine
-  #   build: ./frontend
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - .:/workspaces/booktrader
-  #   working_dir: /workspaces/booktrader/frontend
-  #   command: sh -c "npm install && npm start"
-  #   depends_on:
-  #     - backend
-  # tests:
-  #   build: .
-  #   volumes:
-  #     - .:/booktrader/
-  #   entrypoint: /usr/local/bin/python3.11
-  #   command: manage.py test
+      - ..:/workspace
+    links: 
+      - db
+    
+  db:
+    image: postgres
+    restart: unless-stopped
+    ports: 
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: dbpassword

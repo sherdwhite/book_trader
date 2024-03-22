@@ -1,21 +1,24 @@
 version: '3'
 services:
-  backend:
-    build: ./backend
+  booktrader:
+    build: 
+      context: ./booktrader
     ports:
       - 8000:8000
     volumes:
-      - .:/booktrader/backend/
+      - static:/static
     entrypoint: /usr/local/bin/python3.11
     command: manage.py runserver 0.0.0.0:8000
-  frontend:
-    build: ./frontend
-    ports:
-      - 3000:3000
+  nginx:
+    build:
+      context: ./nginx
     volumes:
-      - .:/booktrader/frontend/build
+      - static:/static
+    ports:
+      - "80:80"
     depends_on:
-      - backend
+      - booktrader
+      - db
   db:
     image: postgres:latest
     volumes:
@@ -30,4 +33,5 @@ services:
   #   command: manage.py test
 volumes:
   postgres_data:  
+  static:
 

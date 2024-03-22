@@ -95,7 +95,7 @@ local_settings.py
 
 newrelic.ini
 
-backend/db.sqlite3
+booktrader/db.sqlite3
 
 # node
 node_modules

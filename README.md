@@ -17,16 +17,16 @@ The setup steps below assume you have just cloned the git repo and are in the di
 
 ```
 $ docker-compose build
-$ docker-compose run --rm backend manage.py migrate
-$ docker-compose run --rm backend manage.py loaddata initial_data_MANUAL
-$ docker-compose run --rm backend manage.py createsuperuser
+$ docker-compose run --rm booktrader manage.py migrate
+$ docker-compose run --rm booktrader manage.py loaddata initial_data_MANUAL
+$ docker-compose run --rm booktrader manage.py createsuperuser
 ```
 
 #### Start the container
 
 `$ docker-compose up`
 
-This will start the backend container and run the tests.
+This will start the booktrader container and run the tests.
 
 If you followed the installations steps above, the site should now be
 accessible at http://localhost:8000/ if you have installed docker in a
@@ -73,4 +73,4 @@ To generate random ratings on all books from all users use the
 `generate_random_strings` management command. Note that this is destructive
 (it will delete all existing ratings.):
 
-`docker-compose run --rm backend manage.py generate_random_ratings`
+`docker-compose run --rm booktrader manage.py generate_random_ratings`

@@ -10,30 +10,11 @@
 
 	// The 'service' property is the name of the service for the container that VS Code should
 	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
-	"service": "backend",
+	"service": "workspace",
 
 	// The optional 'workspaceFolder' property is the path VS Code should open by default when
 	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
-	"workspaceFolder": "/workspaces/booktrader",  // "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-
-	"extensions": [
-		"ms-python.python",
-		"dbaeumer.vscode-eslint",
-		"esbenp.prettier-vscode"
-	  ],
-
-	"features": {
-		"ghcr.io/devcontainers/features/python:1": {
-			"installTools": true,
-			"version": "latest"
-		},
-		"ghcr.io/devcontainers-contrib/features/black:2": {
-			"version": "latest"
-		},
-		"ghcr.io/devcontainers-contrib/features/pylint:2": {
-			"version": "latest"
-		}
-	},
+	"workspaceFolder": "/workspace",  // "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
 	// "mounts": [
 	// 	"type=bind,source=${localEnv:HOME}/vscode-ext,target=/home/developer/.vscode-server/extensions"
@@ -79,10 +60,13 @@
 			"editor.wordWrap": "wordWrapColumn",
 			"editor.wordWrapColumn": 99
 		  },
-		  "extensions": ["ms-python.python"]
+		  "extensions": [
+			"ms-python.python", 
+			"dbaeumer.vscode-eslint",
+		  	"esbenp.prettier-vscode"
+			]
 		}
-	  },
-	  "shutdownAction": "stopCompose"
+	  }
 
 	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "devcontainer"

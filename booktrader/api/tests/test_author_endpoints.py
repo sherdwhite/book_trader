@@ -9,7 +9,7 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework import status
 
-from backend.books.models import Author
+from booktrader.books.models import Author
 
 logger = logging.getLogger(__name__)
 

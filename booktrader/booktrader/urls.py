@@ -21,5 +21,5 @@ from books.views import MainView
 urlpatterns = [
     path("admin/", admin.site.urls),
     re_path(r"^api/", include("api.urls")),
-    re_path(r"^$", MainView.as_view()),
+    # re_path(r"^$", MainView.as_view()),
 ]

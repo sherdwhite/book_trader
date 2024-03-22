@@ -5,3 +5,4 @@ django-stubs
 Django==4.1.7
 djangorestframework==3.14.0
 flake8
+psycopg[binary]==3.1.18
