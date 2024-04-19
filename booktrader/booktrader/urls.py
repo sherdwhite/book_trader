@@ -20,6 +20,6 @@ from books.views import MainView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", MainView.as_view(), name='index'),
     re_path(r"^api/", include("api.urls")),
-    # re_path(r"^$", MainView.as_view()),
 ]
