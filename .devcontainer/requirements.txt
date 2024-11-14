@@ -1,5 +1,6 @@
 autoflake
-black==23.9.1
+black
+debugpy
 django-debug-toolbar
 django-stubs
 Django==4.2.11
