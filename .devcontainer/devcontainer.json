@@ -40,8 +40,8 @@
 	"customizations": {
 		"vscode": {
 		  "settings": {
+			"black-formatter.path": ["/usr/local/bin/black"],
 			"python.pythonPath": "/usr/local/bin/python",
-			"python.venvPath": "/workspace/.venv",
 			"python.formatting.provider": "black",
 			"python.linting.enabled": true,
 			"python.linting.pylintEnabled": false,
@@ -52,8 +52,16 @@
 			],
 			"python.languageServer": "Pylance",
 			"python.terminal.activateEnvironment": true,
+			"python.testing.unittestEnabled": false,
 			"python.testing.pytestEnabled": true,
-			"python.testing.unittestEnabled": true,
+			"[python]": {
+				"editor.defaultFormatter": "ms-python.black-formatter",
+				"editor.formatOnSave": true,
+				"editor.codeActionsOnSave": {
+				"source.organizeImports": "explicit",
+				"source.unusedImports": "explicit"
+				}
+			},
 			"python.autoComplete.addBrackets": true,
 			"python.analysis.completeFunctionParens": true,
 			"editor.rulers": [99],
