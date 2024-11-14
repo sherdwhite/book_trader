@@ -1,7 +1,7 @@
 # encoding: utf-8
 from __future__ import unicode_literals
 
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Avg
 
@@ -12,8 +12,12 @@ class Book(models.Model):
     description = models.TextField(blank=True)
     publisher = models.ForeignKey("Publisher", on_delete=models.CASCADE)
     isbn = models.CharField(max_length=255)
-    average_rating = models.DecimalField(decimal_places=1, max_digits=2, default=0.0,
-                                         validators=[MinValueValidator(0), MaxValueValidator(5)])
+    average_rating = models.DecimalField(
+        decimal_places=1,
+        max_digits=2,
+        default=0.0,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+    )
 
     class Meta:
         ordering = ("title",)
@@ -37,7 +41,9 @@ class Author(models.Model):
 
 
 class Rating(models.Model):
-    rating = models.IntegerField(default=3, validators=[MinValueValidator(1), MaxValueValidator(5)])
+    rating = models.IntegerField(
+        default=3, validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
     user = models.ForeignKey(
         "auth.User",
         related_name="ratings",
@@ -55,11 +61,14 @@ class Rating(models.Model):
     def save(self, *args, **kwargs):
         super(Rating, self).save(*args, **kwargs)
         book_id = self.book.id
-        rating_average = Rating.objects.filter(book_id=book_id).aggregate(Avg('rating')).get('rating__avg')
+        rating_average = (
+            Rating.objects.filter(book_id=book_id)
+            .aggregate(Avg("rating"))
+            .get("rating__avg")
+        )
         book = Book.objects.get(id=book_id)
         if rating_average and book:
             book.average_rating = round(rating_average, 1)
         else:
             book.average_rating = 0
         book.save()
-
