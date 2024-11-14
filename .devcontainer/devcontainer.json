@@ -4,6 +4,7 @@
 	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
 	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
 	"dockerComposeFile": [
+		"../docker-compose.yml",
 		"docker-compose.yml"
 	],
 
@@ -13,7 +14,7 @@
 
 	// The optional 'workspaceFolder' property is the path VS Code should open by default when
 	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
-	"workspaceFolder": "/booktrader",  // "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"workspaceFolder": "/workspace",  // "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
 	// "mounts": [
 	// 	"type=bind,source=${localEnv:HOME}/vscode-ext,target=/home/developer/.vscode-server/extensions"
@@ -40,7 +41,7 @@
 		"vscode": {
 		  "settings": {
 			"python.pythonPath": "/usr/local/bin/python",
-			"python.venvPath": "/booktrader/.venv",
+			"python.venvPath": "/workspace/.venv",
 			"python.formatting.provider": "black",
 			"python.linting.enabled": true,
 			"python.linting.pylintEnabled": false,

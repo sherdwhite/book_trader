@@ -12,9 +12,9 @@ services:
       DB_PASSWORD: dbpassword
     build: 
       context: ..
-      dockerfile: ../book-trader/booktrader/Dockerfile  # Correct relative path to the Dockerfile
+      dockerfile: ./book-trader/booktrader/Dockerfile
     volumes:
-      - ..:/booktrader
+      - ..:/workspace
     links: 
       - db
     
@@ -29,11 +29,11 @@ services:
   nginx:
     build:
       context: ..
-      dockerfile: ../book-trader/nginx/Dockerfile  # Correct relative path to the Dockerfile
+      dockerfile: ./book-trader/nginx/Dockerfile
     depends_on:
       - booktrader
       - db
     ports:
       - 80:80
     volumes:
-      - ..:/booktrader
+      - ..:/workspace
