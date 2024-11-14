@@ -78,7 +78,8 @@
 		  	"esbenp.prettier-vscode",
 			"ms-python.black-formatter",
 			"ms-python.isort",
-			"eamodio.gitlens"
+			"eamodio.gitlens",
+			"ms-azuretools.vscode-docker"
 			]
 		}
 	  }
