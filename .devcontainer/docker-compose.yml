@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  workspace:
+  booktrader:
     ports: 
      - 8000:8000
     environment:
@@ -12,9 +12,9 @@ services:
       DB_PASSWORD: dbpassword
     build: 
       context: ..
-      dockerfile: book-trader/.devcontainer/Dockerfile
+      dockerfile: ../book-trader/booktrader/Dockerfile  # Correct relative path to the Dockerfile
     volumes:
-      - ..:/workspace
+      - ..:/booktrader
     links: 
       - db
     
@@ -25,3 +25,15 @@ services:
       - 5432:5432
     environment:
       POSTGRES_PASSWORD: dbpassword
+
+  nginx:
+    build:
+      context: ..
+      dockerfile: ../book-trader/nginx/Dockerfile  # Correct relative path to the Dockerfile
+    depends_on:
+      - booktrader
+      - db
+    ports:
+      - 80:80
+    volumes:
+      - ..:/booktrader
