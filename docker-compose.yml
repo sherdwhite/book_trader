@@ -7,8 +7,12 @@ services:
       - 8000:8000
     volumes:
       - static:/static
-    entrypoint: /usr/local/bin/python3.12
-    command: manage.py runserver 0.0.0.0:8000
+    # entrypoint and command are now handled by the entrypoint.sh script
+    # entrypoint sets the entrypoint for the container to the python3.12 executable
+    # entrypoint: /usr/local/bin/python3.12
+    # entrypoint: /bin/sh -c
+    # # command runs as arguments to the entrypoint
+    # command: "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
   nginx:
     build:
       context: ./nginx

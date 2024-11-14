@@ -15,17 +15,23 @@ ENV PYTHONPATH /booktrader/
 ENV DJANGO_SETTINGS_MODULE booktrader.settings
 ENV DEBUG=True
 
-# Copy the entire project to the container
-COPY . /booktrader
-
 # Set working directory for the Django project
 WORKDIR /booktrader
 
-# # List the contents of the /booktrader directory for debugging
-# RUN ls -l /booktrader
+# Copy only the requirements.txt file to the container
+COPY requirements.txt /booktrader/
 
 # Install Python dependencies
 RUN pip install -r requirements.txt
 
-# Command to start the Django server
-CMD ["./manage.py", "runserver", "0.0.0.0:8000"]
+# Copy the rest of the project files to the container
+COPY . /booktrader
+
+# List the contents of the /booktrader directory for debugging
+RUN ls -l /booktrader
+
+# Make the entrypoint script executable
+RUN chmod +x /booktrader/entrypoint.sh
+
+# Set the entrypoint to the entrypoint script
+ENTRYPOINT ["/booktrader/entrypoint.sh"]
