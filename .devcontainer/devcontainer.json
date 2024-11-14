@@ -21,7 +21,9 @@
 	// ],
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {}
+	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [8000],
@@ -64,14 +66,19 @@
 			},
 			"python.autoComplete.addBrackets": true,
 			"python.analysis.completeFunctionParens": true,
+			"editor.formatOnSave": true,
 			"editor.rulers": [99],
 			"editor.wordWrap": "wordWrapColumn",
 			"editor.wordWrapColumn": 99
 		  },
 		  "extensions": [
 			"ms-python.python", 
+			"ms-python.debugpy",
 			"dbaeumer.vscode-eslint",
-		  	"esbenp.prettier-vscode"
+		  	"esbenp.prettier-vscode",
+			"ms-python.black-formatter",
+			"ms-python.isort",
+			"eamodio.gitlens"
 			]
 		}
 	  }
