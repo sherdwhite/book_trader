@@ -13,6 +13,7 @@ services:
     build: 
       context: ./booktrader
       dockerfile: ./Dockerfile
+    entrypoint: ["tail", "-f", "/dev/null"]
     volumes:
       - .:/workspace
     links: 
