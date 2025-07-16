@@ -65,7 +65,6 @@
 					"**/__pycache__/**": true,
 					"**/static/bootstrap-*/**": true,
 					"**/.git/**": true,
-					"**/node_modules/**": true,
 					"**/*.pyc": true,
 					"**/*.pyo": true
 				},

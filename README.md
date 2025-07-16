@@ -33,27 +33,6 @@ accessible at http://localhost:8000/ if you have installed docker in a
 different way then you should substitute `localhost` for the IP of your
 docker machine which you can obtain by running `docker-machine ip default`.
 
-## Javascript (Node / NPM)
-
-The Javascript side is run locally, outside of a docker container.
-
-### Very First Time
-
-This assumes that you've already installed node and have a fairly recent version.
-
-```
-$ npm install
-$ npm run build
-```
-
-Note that running the Django application will return an HTML view that pulls in `main.js` from the above build command. The application should be accessible from http://localhost:8000/ at this point.
-
-### Other commands
-
-* `npm run watch` -- Have npm watch for changes and build automatically.
-* `npm run eslint` -- Lint the JS according to the local .eslintrc.json.
-* `npm run test` -- Run the JS test suite.
-
 ## Tests
 
 A docker container exists for running the python tests, you can run this container directly with:
@@ -63,10 +42,6 @@ A docker container exists for running the python tests, you can run this contain
 Or if you're not using Docker, just use the default Django test runner:
 
 `python manage.py test`
-
-To run the JS tests use:
-
-`npm run test`
 
 ## Utilities
 To generate random ratings on all books from all users use the
