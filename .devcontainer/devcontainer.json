@@ -1,89 +1,98 @@
 {
 	"name": "BookTrader",
-
-	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
-	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
 	"dockerComposeFile": [
-		"../docker-compose.yml",
 		"docker-compose.yml"
 	],
-
-	// The 'service' property is the name of the service for the container that VS Code should
-	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
 	"service": "booktrader",
+	"workspaceFolder": "/workspace",
 
-	// The optional 'workspaceFolder' property is the path VS Code should open by default when
-	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
-	"workspaceFolder": "/workspace",  // "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	// Persist VS Code extensions across rebuilds
+	"mounts": [
+		"source=booktrader-vscode-extensions,target=/root/.vscode-server/extensions,type=volume"
+	],
 
-	// "mounts": [
-	// 	"type=bind,source=${localEnv:HOME}/vscode-ext,target=/home/developer/.vscode-server/extensions"
-	// ],
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers/features/git:1": {}
+		"ghcr.io/devcontainers/features/git:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {}
 	},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [8000],
+	// Use port 5433 for PostgreSQL instead of default 5432 to avoid conflicts
+	// with the main docker-compose.yml setup, allowing both to run simultaneously
+	"forwardPorts": [8000, 5433],
+	"portsAttributes": {
+		"8000": {
+			"label": "Django Dev Server",
+			"onAutoForward": "notify"
+		},
+		"5433": {
+			"label": "PostgreSQL"
+		}
+	},
 
-	// Uncomment the next line if you want start specific services in your Docker Compose config.
-	// "runServices": [],
+	// Setup environment after container creation (without starting server)
+	"postCreateCommand": "pip install -r /workspace/.devcontainer/requirements.txt && python /workspace/booktrader/manage.py migrate",
 
-	// Uncomment the next line if you want to keep your containers running after VS Code shuts down.
-	// "shutdownAction": "none",
-
-	// Uncomment the next line to run commands after the container is created.
-	// "postCreateCommand": "cat /etc/os-release",
-	// "postCreateCommand": "npm install && npm run build && python manage.py migrate && python manage.py runserver 0.0.0.0:8000",
-	
-	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
-		  "settings": {
-			"black-formatter.path": ["/usr/local/bin/black"],
-			"python.pythonPath": "/usr/local/bin/python",
-			"python.formatting.provider": "black",
-			"python.linting.enabled": true,
-			"python.linting.pylintEnabled": false,
-			"python.linting.flake8Enabled": true,
-			"python.linting.flake8Args": [
-			  "--ignore=E501",
-			  "--exclude=venv"
-			],
-			"python.languageServer": "Pylance",
-			"python.terminal.activateEnvironment": true,
-			"python.testing.unittestEnabled": false,
-			"python.testing.pytestEnabled": true,
-			"[python]": {
-				"editor.defaultFormatter": "ms-python.black-formatter",
+			"settings": {
+				// Modern Python settings
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"python.linting.enabled": true,
+				"python.linting.pylintEnabled": false,
+				"python.linting.flake8Enabled": true,
+				"python.linting.flake8Args": [
+					"--ignore=E501",
+					"--exclude=venv,migrations"
+				],
+				"python.languageServer": "Pylance",
+				"python.terminal.activateEnvironment": true,
+				"python.testing.unittestEnabled": false,
+				"python.testing.pytestEnabled": true,
+				"python.testing.pytestArgs": [
+					"--no-header",
+					"--tb=short",
+					"-v"
+				],
+
+				// File formatting
+				"[python]": {
+					"editor.defaultFormatter": "ms-python.black-formatter",
+					"editor.formatOnSave": true,
+					"editor.codeActionsOnSave": {
+						"source.organizeImports": "explicit",
+						"source.fixAll": "explicit"
+					}
+				},
+
+				// Editor settings
 				"editor.formatOnSave": true,
-				"editor.codeActionsOnSave": {
-				"source.organizeImports": "explicit",
-				"source.unusedImports": "explicit"
+				"editor.rulers": [99],
+				"editor.wordWrap": "wordWrapColumn",
+				"editor.wordWrapColumn": 99,
+				"files.trimTrailingWhitespace": true,
+				"files.insertFinalNewline": true,
+
+				// Django specific
+				"emmet.includeLanguages": {
+					"django-html": "html"
+				},
+				"files.associations": {
+					"*.html": "django-html"
 				}
 			},
-			"python.autoComplete.addBrackets": true,
-			"python.analysis.completeFunctionParens": true,
-			"editor.formatOnSave": true,
-			"editor.rulers": [99],
-			"editor.wordWrap": "wordWrapColumn",
-			"editor.wordWrapColumn": 99
-		  },
-		  "extensions": [
-			"ms-python.python", 
-			"ms-python.debugpy",
-			"dbaeumer.vscode-eslint",
-		  	"esbenp.prettier-vscode",
-			"ms-python.black-formatter",
-			"ms-python.isort",
-			"eamodio.gitlens",
-			"ms-azuretools.vscode-docker"
+			"extensions": [
+				"ms-python.python",
+				"ms-python.debugpy",
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"ms-python.pylint",
+				"batisteo.vscode-django",
+				"eamodio.gitlens",
+				"ms-azuretools.vscode-docker",
+				"ms-vscode.vscode-json"
 			]
 		}
-	  }
+	},
 
-	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "devcontainer"
+	"remoteUser": "root"
 }

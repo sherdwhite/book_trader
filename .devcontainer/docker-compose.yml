@@ -1,40 +1,67 @@
-version: '3'
+version: '3.8'
 
 services:
   booktrader:
-    ports: 
-     - 8000:8000
+    ports:
+     - "8000:8000"
     environment:
       DB_ENGINE: django.db.backends.postgresql
       DB_USER: postgres
       DB_NAME: postgres
       DB_HOST: db
       DB_PASSWORD: dbpassword
-    build: 
-      context: ./booktrader
+    build:
+      context: ../booktrader
       dockerfile: ./Dockerfile
-    entrypoint: ["tail", "-f", "/dev/null"]
+    # Override the entrypoint to prevent automatic Django server startup
+    entrypoint: []
+    # Keep container running for development
+    command: tail -f /dev/null
     volumes:
-      - .:/workspace
-    links: 
+      - ..:/workspace:cached
+      # Persist Python packages
+      - booktrader-pip-cache:/root/.cache/pip
+      - static:/static
+    depends_on:
       - db
-    
+    networks:
+      - booktrader-network
+
   db:
-    image: postgres
+    image: postgres:15-alpine
     restart: unless-stopped
-    ports: 
-      - 5432:5432
+    ports:
+      - "5433:5432"
     environment:
       POSTGRES_PASSWORD: dbpassword
-
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      # Persist database data
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - booktrader-network
   nginx:
     build:
-      context: ./nginx
+      context: ../nginx
       dockerfile: ./Dockerfile
     depends_on:
       - booktrader
       - db
     ports:
-      - 80:80
+      - "80:80"
     volumes:
-      - .:/workspace
+      - ..:/workspace:cached
+      - static:/static
+    networks:
+      - booktrader-network
+
+volumes:
+  postgres-data:
+  booktrader-pip-cache:
+  static:
+
+networks:
+  booktrader-network:
+    driver: bridge
