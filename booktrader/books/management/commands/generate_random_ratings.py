@@ -1,19 +1,15 @@
 import logging
 import random
 
+from books.models import Book, Rating
 from django.contrib.auth.models import User
 from django.core.management import BaseCommand
-
-from booktrader.books.models import Book, Rating
-
 
 logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = (
-        "Generate randomized ratings for all books and users (!! deletes all existing ratings !!)"
-    )
+    help = "Generate randomized ratings for all books and users (!! deletes all existing ratings !!)"
 
     def handle(self, *args, **options):
         Rating.objects.all().delete()

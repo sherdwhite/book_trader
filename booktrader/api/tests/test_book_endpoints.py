@@ -1,16 +1,13 @@
 # encoding: utf-8
-from __future__ import unicode_literals
 
 import logging
 import random
 
 from django.urls import reverse
-
-from rest_framework.test import APITestCase
 from rest_framework import status
+from rest_framework.test import APITestCase
 
-from booktrader.books.models import Book, Author, Publisher
-
+from booktrader.books.models import Author, Book, Publisher
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +17,10 @@ class TestBookEndpoints(APITestCase):
         self.author = Author.objects.create(name="Såm Lake")
         self.publisher = Publisher.objects.create(name="Fantastic Flight")
         self.book = Book.objects.create(
-            title="Heraldic Wîng", isbn="1234567890123", publisher=self.publisher, average_rating=0.0
+            title="Heraldic Wîng",
+            isbn="1234567890123",
+            publisher=self.publisher,
+            average_rating=0.0,
         )
         self.book.authors.add(self.author)
 
@@ -30,7 +30,7 @@ class TestBookEndpoints(APITestCase):
             "description": "High fantasy",
             "authors": [self.author.pk],
             "publisher": self.publisher.pk,
-            "average_rating": 0.0
+            "average_rating": 0.0,
         }
 
         self.detail_url = reverse("book-detail", kwargs={"pk": self.book.pk})
