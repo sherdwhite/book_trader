@@ -3,11 +3,10 @@
 import logging
 import random
 
+from books.models import Publisher
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-
-from booktrader.books.models import Publisher
 
 logger = logging.getLogger(__name__)
 

@@ -1,8 +1,7 @@
 # encoding: utf-8
+from books.models import Author, Book, Publisher, Rating
 from django.contrib.auth.models import User
 from django.test import TestCase
-
-from booktrader.books.models import Book, Author, Publisher, Rating
 
 
 class TestBooks(TestCase):

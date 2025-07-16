@@ -1,7 +1,7 @@
-version: '3'
+version: '3.8'
 services:
   booktrader:
-    build: 
+    build:
       context: ./booktrader
     ports:
       - 8000:8000
@@ -36,6 +36,6 @@ services:
   #   entrypoint: /usr/local/bin/python3.12
   #   command: manage.py test
 volumes:
-  postgres_data:  
+  postgres_data:
   static:
 
