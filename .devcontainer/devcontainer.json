@@ -74,7 +74,9 @@
 					"**/__pycache__": true,
 					"**/static/bootstrap-*": true,
 					"**/*.pyc": true,
-					"**/*.pyo": true
+					"**/*.pyo": true,
+					"**/*.optimized": true,
+					"**/.env.example": true
 				},
 
 				// File formatting
