@@ -10,6 +10,8 @@ services:
       DB_NAME: postgres
       DB_HOST: db
       DB_PASSWORD: dbpassword
+      PYTHONDONTWRITEBYTECODE: 1
+      PYTHONUNBUFFERED: 1
     build:
       context: ../booktrader
       dockerfile: ./Dockerfile

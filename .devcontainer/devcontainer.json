@@ -42,7 +42,7 @@
 				"python.linting.flake8Enabled": true,
 				"python.linting.flake8Args": [
 					"--ignore=E501",
-					"--exclude=venv,migrations"
+					"--exclude=venv,migrations,__pycache__,static"
 				],
 				"python.languageServer": "Pylance",
 				"python.terminal.activateEnvironment": true,
@@ -53,6 +53,30 @@
 					"--tb=short",
 					"-v"
 				],
+
+				// Pylance performance settings
+				"python.analysis.autoImportCompletions": true,
+				"python.analysis.autoSearchPaths": true,
+				"python.analysis.diagnosticMode": "workspace",
+				"python.analysis.typeCheckingMode": "basic",
+
+				// File watching exclusions for performance
+				"files.watcherExclude": {
+					"**/__pycache__/**": true,
+					"**/static/bootstrap-*/**": true,
+					"**/.git/**": true,
+					"**/node_modules/**": true,
+					"**/*.pyc": true,
+					"**/*.pyo": true
+				},
+
+				// Search exclusions
+				"search.exclude": {
+					"**/__pycache__": true,
+					"**/static/bootstrap-*": true,
+					"**/*.pyc": true,
+					"**/*.pyo": true
+				},
 
 				// File formatting
 				"[python]": {
@@ -85,7 +109,6 @@
 				"ms-python.debugpy",
 				"ms-python.black-formatter",
 				"ms-python.isort",
-				"ms-python.pylint",
 				"batisteo.vscode-django",
 				"eamodio.gitlens",
 				"ms-azuretools.vscode-docker",
