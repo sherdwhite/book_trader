@@ -99,6 +99,10 @@ newrelic.ini
 
 booktrader/db.sqlite3
 
+# Prevent auto-generated template files
+*.optimized
+.env.example
+
 # vscode
 .devcontainer.json
 .history
