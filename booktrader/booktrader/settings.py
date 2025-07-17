@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "api.apps.ApiConfig",
     "books.apps.BooksConfig",
+    "users.apps.UsersConfig",
+    "auctions.apps.AuctionsConfig",
+    "trades.apps.TradesConfig",
 ]
 
 MIDDLEWARE = [
