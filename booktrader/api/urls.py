@@ -1,18 +1,14 @@
 from django.urls import include, path
-from rest_framework import routers
 
-from . import views
-
-router = routers.DefaultRouter()
-router.register(r"users", views.UserViewSet)
-router.register(r"books", views.BookViewSet)
-router.register(r"authors", views.AuthorViewSet)
-router.register(r"publishers", views.PublisherViewSet)
-router.register(r"ratings", views.RatingViewSet)
-
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
+# API versioning - this allows for /api/v1/ and future versions
 urlpatterns = [
-    path('', include(router.urls)),
+    # Versioned API endpoints
+    path("v1/", include("api.v1.urls")),
+    # Future API versions can be added here:
+    # path('v2/', include('api.v2.urls')),  # When v2 is ready
+    # Authentication URLs for browsable API
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    # Default to v1 for backward compatibility (optional)
+    # This allows existing clients using /api/books/ to continue working
+    path("", include("api.v1.urls")),
 ]
