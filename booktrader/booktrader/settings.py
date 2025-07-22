@@ -25,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY", 
-    "django-insecure-ea&fc43ud#^7e_^&p9=@y7(_6fm-a$_)lu!^hil@^d(g7k2u3m"
+    "DJANGO_SECRET_KEY",
+    "django-insecure-ea&fc43ud#^7e_^&p9=@y7(_6fm-a$_)lu!^hil@^d(g7k2u3m",
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -101,7 +101,9 @@ DATABASES = {
         "HOST": os.environ.get("DB_HOST", "db"),  # set in docker-compose.yml
         "PORT": int(os.environ.get("DB_PORT", "5432")),  # default postgres port
         "OPTIONS": get_db_pool_settings(),
-        "CONN_MAX_AGE": int(os.environ.get("DB_CONN_MAX_AGE", "600")),  # Keep connections alive for 10 minutes
+        "CONN_MAX_AGE": int(
+            os.environ.get("DB_CONN_MAX_AGE", "600")
+        ),  # Keep connections alive for 10 minutes
         "CONN_HEALTH_CHECKS": True,  # Enable connection health checks
     }
 }
