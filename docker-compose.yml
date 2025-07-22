@@ -7,6 +7,18 @@ services:
       - 8000:8000
     volumes:
       - static:/static
+    environment:
+      # Database settings for connection pooling
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_CONN_MAX_AGE=600
+      # Set to 'production' for production-level connection pooling
+      - DJANGO_ENV=development
+    depends_on:
+      - db
     # entrypoint and command are now handled by the entrypoint.sh script
     # entrypoint sets the entrypoint for the container to the python3.12 executable
     # entrypoint: /usr/local/bin/python3.12
@@ -24,7 +36,7 @@ services:
       - booktrader
       - db
   db:
-    image: postgres:latest
+    image: postgres:17-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:

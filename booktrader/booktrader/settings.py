@@ -10,7 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+# Import database configuration helpers
+from .settings.db_config import get_db_pool_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-ea&fc43ud#^7e_^&p9=@y7(_6fm-a$_)lu!^hil@^d(g7k2u3m"
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY", 
+    "django-insecure-ea&fc43ud#^7e_^&p9=@y7(_6fm-a$_)lu!^hil@^d(g7k2u3m"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "True").lower() in ("true", "1", "yes")
 
-ALLOWED_HOSTS = ["*"]
+# Parse ALLOWED_HOSTS from environment variable
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(",")
+if ALLOWED_HOSTS == [""]:
+    ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -85,11 +95,14 @@ DATABASES = {
     # }
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",  # set in docker-compose.yml
-        "PORT": 5432,  # default postgres port
+        "NAME": os.environ.get("DB_NAME", "postgres"),
+        "USER": os.environ.get("DB_USER", "postgres"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", "postgres"),
+        "HOST": os.environ.get("DB_HOST", "db"),  # set in docker-compose.yml
+        "PORT": int(os.environ.get("DB_PORT", "5432")),  # default postgres port
+        "OPTIONS": get_db_pool_settings(),
+        "CONN_MAX_AGE": int(os.environ.get("DB_CONN_MAX_AGE", "600")),  # Keep connections alive for 10 minutes
+        "CONN_HEALTH_CHECKS": True,  # Enable connection health checks
     }
 }
 

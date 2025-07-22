@@ -1,0 +1,30 @@
+# Production override for docker-compose
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+version: '3.8'
+services:
+  booktrader:
+    environment:
+      # Production database settings with larger connection pool
+      - DJANGO_ENV=production
+      - DB_CONN_MAX_AGE=3600  # Keep connections alive for 1 hour in production
+      - DEBUG=False
+    # Add health check for production
+    healthcheck:
+      test: ["CMD", "python", "manage.py", "check", "--database", "default"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  db:
+    environment:
+      # More secure database setup for production
+      - POSTGRES_PASSWORD=secure_production_password
+      - POSTGRES_HOST_AUTH_METHOD=md5
+    # Add health check for database
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

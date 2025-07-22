@@ -79,8 +79,15 @@ target/
 celerybeat-schedule
 celerybeat-schedule.db
 
-# dotenv
+# dotenv - Environment files (keep examples, ignore actual env files)
 .env
+.env.local
+.env.production
+.devcontainer/.env
+# But keep the example files
+!.env.example
+!.env.production.example
+!.devcontainer/.env.example
 
 # virtualenv
 venv/
@@ -101,7 +108,6 @@ booktrader/db.sqlite3
 
 # Prevent auto-generated template files
 *.optimized
-.env.example
 
 # vscode
 .devcontainer.json
