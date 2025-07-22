@@ -49,3 +49,11 @@ To generate random ratings on all books from all users use the
 (it will delete all existing ratings.):
 
 `docker-compose run --rm booktrader manage.py generate_random_ratings`
+
+## License
+
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License - see the [LICENSE](LICENSE) file for details.
+
+**Non-Commercial Use Only**: This project is available for personal and educational use. Commercial use requires express permission from the repository owner.
+
+For commercial licensing inquiries, please contact the repository owner.
