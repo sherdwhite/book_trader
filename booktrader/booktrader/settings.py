@@ -135,7 +135,7 @@ if os.environ.get("DB_HOST") == "db":
             }
         }
 
-    except Exception as e:
+    except:
         pass  # Keep SQLite
 
 
