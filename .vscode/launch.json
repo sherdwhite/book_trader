@@ -14,7 +14,11 @@
             ],
             "django": true,
             "justMyCode": false,
-            "program": "${workspaceFolder}/booktrader/manage.py"
+            "program": "${workspaceFolder}/booktrader/manage.py",
+            "console": "integratedTerminal",
+            "env": {
+                "DJANGO_DEBUG": "True"
+            }
         },
         {
             "name": "Django Shell",
@@ -23,7 +27,8 @@
             "program": "${workspaceFolder}/booktrader/manage.py",
             "django": true,
             "justMyCode": false,
-            "args": ["shell"]
+            "args": ["shell"],
+            "console": "integratedTerminal"
         }
     ]
 }

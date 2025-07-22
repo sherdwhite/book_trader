@@ -13,11 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
-# Import database configuration helpers
-from .settings.db_config import get_db_pool_settings
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -89,24 +86,57 @@ WSGI_APPLICATION = "booktrader.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DB_NAME", "postgres"),
-        "USER": os.environ.get("DB_USER", "postgres"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", "postgres"),
-        "HOST": os.environ.get("DB_HOST", "db"),  # set in docker-compose.yml
-        "PORT": int(os.environ.get("DB_PORT", "5432")),  # default postgres port
-        "OPTIONS": get_db_pool_settings(),
-        "CONN_MAX_AGE": int(
-            os.environ.get("DB_CONN_MAX_AGE", "600")
-        ),  # Keep connections alive for 10 minutes
-        "CONN_HEALTH_CHECKS": True,  # Enable connection health checks
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# Override with PostgreSQL if available
+if os.environ.get("DB_HOST") == "db":
+    try:
+        import psycopg
+
+        # Quick test
+        conn = psycopg.connect(
+            host="db",
+            dbname="postgres",
+            user="postgres",
+            password="dbpassword",
+            connect_timeout=2,
+        )
+        conn.close()
+
+        # If we get here, PostgreSQL is working
+        # Environment-specific connection pooling settings
+        if os.environ.get("DJANGO_ENV") == "production":
+            # Production settings (larger pool for production workloads)
+            conn_max_age = int(os.environ.get("DB_CONN_MAX_AGE", "600"))
+            connect_timeout = int(os.environ.get("DB_CONNECT_TIMEOUT", "30"))
+        else:
+            # Development settings (smaller pool for local development)
+            conn_max_age = int(os.environ.get("DB_CONN_MAX_AGE", "300"))
+            connect_timeout = int(os.environ.get("DB_CONNECT_TIMEOUT", "10"))
+
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": "postgres",
+                "USER": "postgres",
+                "PASSWORD": "dbpassword",
+                "HOST": "db",
+                "PORT": "5432",
+                "OPTIONS": {
+                    "connect_timeout": connect_timeout,
+                },
+                # Connection pooling
+                "CONN_MAX_AGE": conn_max_age,
+                "CONN_HEALTH_CHECKS": True,
+            }
+        }
+
+    except Exception as e:
+        pass  # Keep SQLite
 
 
 # Password validation
@@ -147,6 +177,9 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+# Static files collection directory (required for collectstatic)
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

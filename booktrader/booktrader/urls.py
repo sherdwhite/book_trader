@@ -22,4 +22,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", MainView.as_view(), name="index"),
     re_path(r"^api/", include("api.urls")),
+    path("users/", include("users.urls")),
 ]

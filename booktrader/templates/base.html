@@ -16,8 +16,14 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <a class="navbar-brand" href="{% url 'index' %}">📚 Book Trader</a>
-      <div class="navbar-nav">
-        <a class="nav-link" href="{% url 'index' %}">Books</a>
+      
+      <div class="d-flex justify-content-between w-100">
+        <div class="navbar-nav">
+          <a class="nav-link" href="{% url 'index' %}">Books</a>
+        </div>
+        
+        <!-- User authentication section -->
+        {% include 'users/navbar_user_section.html' %}
       </div>
     </div>
   </nav>
@@ -30,5 +36,32 @@
 
   <!-- Bootstrap JS -->
   <script src={% static "bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js" %}></script>
+  
+  <!-- HTMX event handlers -->
+  <script>
+    // Refresh page content when user logs in or out
+    document.addEventListener('loginSuccess', function() {
+      // Reload the current page to refresh all content
+      window.location.reload();
+    });
+    
+    document.addEventListener('logoutSuccess', function() {
+      // Reload the current page to refresh all content
+      window.location.reload();
+    });
+
+    // Keep dropdown open after login error
+    document.body.addEventListener('htmx:afterSwap', function(event) {
+      // Check if this was a login form update (error case)
+      if (event.detail.target.closest('.dropdown-menu')) {
+        // Find the dropdown button and show the dropdown
+        const dropdownButton = event.detail.target.closest('.dropdown').querySelector('[data-bs-toggle="dropdown"]');
+        if (dropdownButton) {
+          const dropdown = new bootstrap.Dropdown(dropdownButton);
+          dropdown.show();
+        }
+      }
+    });
+  </script>
 </body>
 </html>

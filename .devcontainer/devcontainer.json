@@ -29,8 +29,8 @@
 		}
 	},
 
-	// Setup environment after container creation (without starting server)
-	"postCreateCommand": "pip install -r /workspace/.devcontainer/requirements.txt && python /workspace/booktrader/manage.py migrate",
+	// Commands to run after the container is created
+	"postCreateCommand": "pip install -r /workspace/booktrader/requirements.txt && cd /workspace/booktrader && python manage.py migrate && python manage.py collectstatic --noinput --clear",
 
 	"customizations": {
 		"vscode": {
