@@ -93,16 +93,16 @@ DATABASES = {
 }
 
 # Override with PostgreSQL if available
-if os.environ.get("DB_HOST") == "db":
+if os.environ.get("DB_HOST"):
     try:
         import psycopg
 
         # Quick test
         conn = psycopg.connect(
-            host="db",
-            dbname="postgres",
-            user="postgres",
-            password="dbpassword",
+            host=os.environ.get("DB_HOST", "db"),
+            dbname=os.environ.get("DB_NAME", "postgres"),
+            user=os.environ.get("DB_USER", "postgres"),
+            password=os.environ.get("DB_PASSWORD", "dbpassword"),
             connect_timeout=2,
         )
         conn.close()
@@ -121,11 +121,11 @@ if os.environ.get("DB_HOST") == "db":
         DATABASES = {
             "default": {
                 "ENGINE": "django.db.backends.postgresql",
-                "NAME": "postgres",
-                "USER": "postgres",
-                "PASSWORD": "dbpassword",
-                "HOST": "db",
-                "PORT": "5432",
+                "NAME": os.environ.get("DB_NAME", "postgres"),
+                "USER": os.environ.get("DB_USER", "postgres"),
+                "PASSWORD": os.environ.get("DB_PASSWORD", "dbpassword"),
+                "HOST": os.environ.get("DB_HOST", "db"),
+                "PORT": os.environ.get("DB_PORT", "5432"),
                 "OPTIONS": {
                     "connect_timeout": connect_timeout,
                 },

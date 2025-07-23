@@ -14,12 +14,7 @@ This document explains all environment variables used in the BookTrader applicat
 - **Usage**: Copy to `.devcontainer/.env` and customize
 - **Suitable for**: Development using VS Code DevContainer
 
-### 3. `.env.local`
-- **Purpose**: Ready-to-use local development configuration
-- **Usage**: Use as-is for local PostgreSQL development
-- **Suitable for**: Quick local setup with PostgreSQL installed locally
-
-### 4. `.env.production.example`
+### 3. `.env.production.example`
 - **Purpose**: Template for production deployment
 - **Usage**: Copy to `.env.production` and customize for production
 - **Suitable for**: Production server deployment
@@ -50,12 +45,8 @@ This document explains all environment variables used in the BookTrader applicat
 
 | Variable | Default | Description | Required |
 |----------|---------|-------------|----------|
-| `DB_CONN_MAX_AGE` | `600` | Connection max age in seconds | ❌ No |
-| `DB_CONNECT_TIMEOUT` | `30` | Connection timeout in seconds | ❌ No |
-| `DB_MAX_CONNS_DEV` | `10` | Max connections for development | ❌ No |
-| `DB_MIN_CONNS_DEV` | `2` | Min connections for development | ❌ No |
-| `DB_MAX_CONNS_PROD` | `50` | Max connections for production | ❌ No |
-| `DB_MIN_CONNS_PROD` | `10` | Min connections for production | ❌ No |
+| `DB_CONN_MAX_AGE` | `600` (production) / `300` (development) | Connection max age in seconds | ❌ No |
+| `DB_CONNECT_TIMEOUT` | `30` (production) / `10` (development) | Connection timeout in seconds | ❌ No |
 
 ### Development Tools
 

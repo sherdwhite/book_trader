@@ -16,18 +16,19 @@ Connection pooling is a technique used to manage database connections efficientl
 The following environment variables control database connection pooling:
 
 - `DJANGO_ENV`: Set to `production` for production-level pooling settings
-- `DB_CONN_MAX_AGE`: Connection lifetime in seconds (default: 600 = 10 minutes)
+- `DB_CONN_MAX_AGE`: Connection lifetime in seconds (default: 300 for development, 600 for production)
+- `DB_CONNECT_TIMEOUT`: Connection timeout in seconds (default: 10 for development, 30 for production)
 - `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`: Standard database connection settings
 
-### Pool Sizes
+### Pool Settings
 
 **Development (DJANGO_ENV=development or not set):**
-- Maximum connections: 10
-- Minimum connections: 2
+- Connection max age: 300 seconds (5 minutes)
+- Connection timeout: 10 seconds
 
 **Production (DJANGO_ENV=production):**
-- Maximum connections: 50
-- Minimum connections: 10
+- Connection max age: 600 seconds (10 minutes)
+- Connection timeout: 30 seconds
 
 ## Usage
 
