@@ -224,6 +224,7 @@ For production deployment:
 - [Environment Variables Guide](docs/ENVIRONMENT_VARIABLES.md)
 - [Database Pooling Configuration](docs/DATABASE_POOLING.md)
 - [API Versioning](docs/API_VERSIONING.md)
+- [Static Files and CSS Framework Guide](docs/STATIC_FILES.md)
 
 ## License
 

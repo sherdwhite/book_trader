@@ -63,7 +63,6 @@
 				// File watching exclusions for performance
 				"files.watcherExclude": {
 					"**/__pycache__/**": true,
-					"**/static/bootstrap-*/**": true,
 					"**/.git/**": true,
 					"**/*.pyc": true,
 					"**/*.pyo": true
@@ -72,7 +71,6 @@
 				// Search exclusions
 				"search.exclude": {
 					"**/__pycache__": true,
-					"**/static/bootstrap-*": true,
 					"**/*.pyc": true,
 					"**/*.pyo": true,
 					"**/*.optimized": true,

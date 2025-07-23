@@ -1,0 +1,35 @@
+/* Custom styles for Book Trader application */
+
+/* Override Bootstrap variables if needed */
+:root {
+  --bs-primary: #007bff;
+  --bs-success: #28a745;
+}
+
+/* Custom component styles */
+.book-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-brand {
+  font-weight: 600;
+}
+
+/* Utility classes */
+.text-muted-light {
+  color: #6c757d !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .book-card {
+    margin-bottom: 1rem;
+  }
+}
