@@ -48,6 +48,27 @@ This document explains all environment variables used in the BookTrader applicat
 | `DB_CONN_MAX_AGE` | `600` (production) / `300` (development) | Connection max age in seconds | ❌ No |
 | `DB_CONNECT_TIMEOUT` | `30` (production) / `10` (development) | Connection timeout in seconds | ❌ No |
 
+### Two-Factor Authentication (2FA)
+
+| Variable | Default | Description | Required |
+|----------|---------|-------------|----------|
+| `OTP_EMAIL_SENDER` | `noreply@booktrader.com` | Email address used for sending 2FA codes | ❌ No |
+| `OTP_EMAIL_TOKEN_VALIDITY` | `300` | 2FA token validity period in seconds (5 minutes) | ❌ No |
+| `OTP_EMAIL_THROTTLE_FACTOR` | `1` | Rate limiting factor for 2FA emails | ❌ No |
+
+### Email Settings (Production Only)
+
+| Variable | Default | Description | Required |
+|----------|---------|-------------|----------|
+| `EMAIL_HOST` | None | SMTP server hostname | ✅ Yes (Production) |
+| `EMAIL_PORT` | `587` | SMTP server port | ❌ No |
+| `EMAIL_USE_TLS` | `True` | Use TLS encryption for SMTP | ❌ No |
+| `EMAIL_HOST_USER` | None | SMTP username | ✅ Yes (Production) |
+| `EMAIL_HOST_PASSWORD` | None | SMTP password | ✅ Yes (Production) |
+| `DEFAULT_FROM_EMAIL` | `OTP_EMAIL_SENDER` value | Default sender email address | ❌ No |
+
+> **Note**: In development, Django uses console email backend (emails are printed to console). Production requires SMTP configuration for 2FA to work.
+
 ### Development Tools
 
 | Variable | Default | Description | Required |
@@ -111,9 +132,52 @@ cp .env.production.example .env.production
 # - Set DEBUG=False
 # - Configure your domain in ALLOWED_HOSTS
 # - Set up production database credentials
+# - Configure SMTP settings for 2FA emails
 # - Configure static file serving
 
 # Deploy using your preferred method
+```
+
+## 2FA (Two-Factor Authentication) Setup
+
+### Development
+- ✅ 2FA codes are printed to console (no SMTP configuration needed)
+- ✅ Default `OTP_EMAIL_SENDER` works fine
+- ✅ Token validity of 300 seconds (5 minutes) is suitable for testing
+
+### Production
+- ⚠️  **REQUIRED**: Configure SMTP settings (`EMAIL_HOST`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`)
+- ⚠️  **RECOMMENDED**: Set a proper `OTP_EMAIL_SENDER` with your domain
+- ⚠️  **RECOMMENDED**: Consider adjusting `OTP_EMAIL_TOKEN_VALIDITY` based on your security needs
+- ✅ Test 2FA functionality before going live
+
+### SMTP Provider Examples
+
+**Gmail/Google Workspace:**
+```bash
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
+```
+
+**AWS SES:**
+```bash
+EMAIL_HOST=email-smtp.us-east-1.amazonaws.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-ses-access-key
+EMAIL_HOST_PASSWORD=your-ses-secret-key
+```
+
+**SendGrid:**
+```bash
+EMAIL_HOST=smtp.sendgrid.net
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=apikey
+EMAIL_HOST_PASSWORD=your-sendgrid-api-key
 ```
 
 ## Security Notes
