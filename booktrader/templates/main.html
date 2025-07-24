@@ -1,58 +1,158 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
     <div class="container mt-4">
+        <!-- Hero Section -->
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold text-primary mb-4">Welcome to BookTrader</h1>
+                <p class="lead mb-4">
+                    Discover, trade, and auction books with fellow book lovers.
+                    Your next great read is just a trade away!
+                </p>
+
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                    <a href="{% url 'books:book_list' %}" class="btn btn-primary btn-lg">
+                        Browse Books
+                    </a>
+                    <a href="{% url 'users:register' %}" class="btn btn-success btn-lg">
+                        Join Community
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="row mb-5">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="fs-1 mb-3">📚</div>
+                        <h5 class="card-title">Browse Books</h5>
+                        <p class="card-text">Discover thousands of books from our community library</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="fs-1 mb-3">🔄</div>
+                        <h5 class="card-title">Trade Books</h5>
+                        <p class="card-text">Exchange your books with other readers worldwide</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="fs-1 mb-3">🏆</div>
+                        <h5 class="card-title">Auction Books</h5>
+                        <p class="card-text">Bid on rare and special edition books</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="text-center mb-0">Quick Actions</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="{% url 'books:book_list' %}" class="text-decoration-none">
+                                    <div class="card border-primary h-100">
+                                        <div class="card-body text-center">
+                                            <div class="fs-2 mb-2">🔍</div>
+                                            <h6 class="card-title">Search Books</h6>
+                                            <p class="card-text small">Find your next read</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="#" class="text-decoration-none">
+                                    <div class="card border-success h-100">
+                                        <div class="card-body text-center">
+                                            <div class="fs-2 mb-2">➕</div>
+                                            <h6 class="card-title">List a Book</h6>
+                                            <p class="card-text small">Share your books</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="#" class="text-decoration-none">
+                                    <div class="card border-warning h-100">
+                                        <div class="card-body text-center">
+                                            <div class="fs-2 mb-2">💬</div>
+                                            <h6 class="card-title">My Trades</h6>
+                                            <p class="card-text small">Active exchanges</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="#" class="text-decoration-none">
+                                    <div class="card border-info h-100">
+                                        <div class="card-body text-center">
+                                            <div class="fs-2 mb-2">⭐</div>
+                                            <h6 class="card-title">Watchlist</h6>
+                                            <p class="card-text small">Books you're watching</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
         <div class="row">
             <div class="col-12">
-                <h1 class="mb-4">Book Trader</h1>
-                <div id="books-container">
-                    <!-- Book list will be loaded here -->
-                    <div class="text-center">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="mt-2">Loading books...</p>
+                <h2 class="text-center mb-4">Community Stats</h2>
+                <div class="row text-center">
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="fs-2 fw-bold text-primary">1,234</div>
+                        <div class="text-muted">Books Available</div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="fs-2 fw-bold text-success">567</div>
+                        <div class="text-muted">Active Traders</div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="fs-2 fw-bold text-warning">890</div>
+                        <div class="text-muted">Successful Trades</div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="fs-2 fw-bold text-info">45</div>
+                        <div class="text-muted">Live Auctions</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- API Configuration for Frontend -->
     <script>
-        // Simple fetch to load books data
-        fetch('{{ base_api_url }}/books/')
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('books-container');
-                if (data.length === 0) {
-                    container.innerHTML = '<p class="text-muted">No books available.</p>';
-                    return;
-                }
-
-                let html = '<div class="row">';
-                data.forEach(book => {
-                    html += `
-                        <div class="col-md-6 col-lg-4 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">${book.title}</h5>
-                                    <p class="card-text">
-                                        <small class="text-muted">ISBN: ${book.isbn}</small><br>
-                                        <span class="badge bg-primary">Rating: ${book.average_rating}/5</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-                container.innerHTML = html;
-            })
-            .catch(error => {
-                console.error('Error loading books:', error);
-                document.getElementById('books-container').innerHTML =
-                    '<div class="alert alert-danger">Error loading books. Please try again later.</div>';
-            });
+    window.BookTrader = {
+        apiUrl: "{{ base_api_url }}",
+        user: {
+            isAuthenticated: {% if user.is_authenticated %}true{% else %}false{% endif %},
+            username: "{{ user.username|default:'' }}"
+        }
+    };
     </script>
-{% endblock content %}
+{% endblock %}
 

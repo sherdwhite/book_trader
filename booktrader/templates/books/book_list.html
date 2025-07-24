@@ -1,128 +1,134 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Book Library{% endblock %}
-
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-8">Book Library</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Book Library</h1>
 
     <!-- Search and Filter Form -->
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-        <form method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
-                <input type="text" name="search" placeholder="Search books..."
-                       value="{{ search_query }}"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                       id="search-input">
-            </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+                <div class="col-md-3">
+                    <input type="text" name="search" placeholder="Search books..."
+                           value="{{ search_query }}"
+                           class="form-control"
+                           id="search-input">
+                </div>
 
-            <div>
-                <select name="author" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-                    <option value="">All Authors</option>
-                    {% for author in authors %}
-                        <option value="{{ author.name }}" {% if author_filter == author.name %}selected{% endif %}>
-                            {{ author.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
+                <div class="col-md-3">
+                    <select name="author" class="form-select">
+                        <option value="">All Authors</option>
+                        {% for author in authors %}
+                            <option value="{{ author.name }}" {% if author_filter == author.name %}selected{% endif %}>
+                                {{ author.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <div>
-                <select name="publisher" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-                    <option value="">All Publishers</option>
-                    {% for publisher in publishers %}
-                        <option value="{{ publisher.name }}" {% if publisher_filter == publisher.name %}selected{% endif %}>
-                            {{ publisher.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
+                <div class="col-md-3">
+                    <select name="publisher" class="form-select">
+                        <option value="">All Publishers</option>
+                        {% for publisher in publishers %}
+                            <option value="{{ publisher.name }}" {% if publisher_filter == publisher.name %}selected{% endif %}>
+                                {{ publisher.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <div>
-                <input type="number" name="min_rating" placeholder="Min Rating"
-                       value="{{ min_rating }}" min="1" max="5" step="0.1"
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-            </div>
+                <div class="col-md-3">
+                    <input type="number" name="min_rating" placeholder="Min Rating"
+                           value="{{ min_rating }}" min="1" max="5" step="0.1"
+                           class="form-control">
+                </div>
 
-            <div class="md:col-span-4">
-                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
-                    Search Books
-                </button>
-                <a href="{% url 'books:book_list' %}" class="ml-2 bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 transition-colors">
-                    Clear Filters
-                </a>
-            </div>
-        </form>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">
+                        Search Books
+                    </button>
+                    <a href="{% url 'books:book_list' %}" class="btn btn-secondary ms-2">
+                        Clear Filters
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Search Suggestions (for AJAX) -->
-    <div id="search-suggestions" class="hidden absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 max-h-60 overflow-y-auto z-10">
+    <div id="search-suggestions" class="d-none position-absolute bg-white border rounded shadow-sm" style="z-index: 1000;">
     </div>
 
     <!-- Books Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div class="row">
         {% for book in books %}
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-            <div class="p-4">
-                <h3 class="text-lg font-semibold mb-2 line-clamp-2">
-                    <a href="{% url 'books:book_detail' book.pk %}" class="text-blue-600 hover:text-blue-800">
-                        {{ book.title }}
-                    </a>
-                </h3>
+        <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'books:book_detail' book.pk %}" class="text-decoration-none">
+                            {{ book.title }}
+                        </a>
+                    </h5>
 
-                <p class="text-gray-600 text-sm mb-2">
-                    by {% for author in book.authors.all %}{{ author.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                </p>
+                    <p class="card-text text-muted small">
+                        by {% for author in book.authors.all %}{{ author.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                    </p>
 
-                <p class="text-gray-500 text-sm mb-3">{{ book.publisher.name }}</p>
+                    <p class="card-text text-muted small">{{ book.publisher.name }}</p>
 
-                {% if book.avg_rating %}
-                <div class="flex items-center mb-2">
-                    <div class="flex text-yellow-400">
-                        {% for i in "12345" %}
-                            {% if book.avg_rating >= i|add:0 %}
-                                ★
-                            {% else %}
-                                ☆
-                            {% endif %}
-                        {% endfor %}
+                    {% if book.avg_rating %}
+                    <div class="mb-2">
+                        <div class="text-warning">
+                            {% for i in "12345" %}
+                                {% if book.avg_rating >= i|add:0 %}
+                                    ★
+                                {% else %}
+                                    ☆
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <small class="text-muted">
+                            {{ book.avg_rating|floatformat:1 }} ({{ book.rating_count }} reviews)
+                        </small>
                     </div>
-                    <span class="text-sm text-gray-600 ml-2">
-                        {{ book.avg_rating|floatformat:1 }} ({{ book.rating_count }} reviews)
-                    </span>
-                </div>
-                {% endif %}
+                    {% endif %}
 
-                <p class="text-gray-700 text-sm line-clamp-3">{{ book.description }}</p>
+                    <p class="card-text small">{{ book.description|truncatewords:15 }}</p>
+                </div>
             </div>
         </div>
         {% empty %}
-        <div class="col-span-full text-center py-8">
-            <p class="text-gray-500 text-lg">No books found matching your criteria.</p>
+        <div class="col-12 text-center py-5">
+            <p class="text-muted">No books found matching your criteria.</p>
         </div>
         {% endfor %}
     </div>
 
     <!-- Pagination -->
     {% if page_obj.has_other_pages %}
-    <div class="mt-8 flex justify-center">
-        <nav class="flex items-center space-x-2">
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if author_filter %}&author={{ author_filter }}{% endif %}{% if publisher_filter %}&publisher={{ publisher_filter }}{% endif %}{% if min_rating %}&min_rating={{ min_rating }}{% endif %}"
-                   class="bg-gray-200 text-gray-700 px-3 py-2 rounded-md hover:bg-gray-300">Previous</a>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if author_filter %}&author={{ author_filter }}{% endif %}{% if publisher_filter %}&publisher={{ publisher_filter }}{% endif %}{% if min_rating %}&min_rating={{ min_rating }}{% endif %}">Previous</a>
+                </li>
             {% endif %}
 
-            <span class="text-gray-700">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-            </span>
+            <li class="page-item active">
+                <span class="page-link">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+            </li>
 
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if author_filter %}&author={{ author_filter }}{% endif %}{% if publisher_filter %}&publisher={{ publisher_filter }}{% endif %}{% if min_rating %}&min_rating={{ min_rating }}{% endif %}"
-                   class="bg-gray-200 text-gray-700 px-3 py-2 rounded-md hover:bg-gray-300">Next</a>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if author_filter %}&author={{ author_filter }}{% endif %}{% if publisher_filter %}&publisher={{ publisher_filter }}{% endif %}{% if min_rating %}&min_rating={{ min_rating }}{% endif %}">Next</a>
+                </li>
             {% endif %}
-        </nav>
-    </div>
+        </ul>
+    </nav>
     {% endif %}
 </div>
 
@@ -139,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const query = this.value.trim();
 
         if (query.length < 2) {
-            suggestionsDiv.classList.add('hidden');
+            suggestionsDiv.classList.add('d-none');
             return;
         }
 
@@ -150,18 +156,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (data.suggestions.length > 0) {
                         suggestionsDiv.innerHTML = data.suggestions.map(item => {
                             if (item.type === 'book') {
-                                return `<div class="p-2 hover:bg-gray-100 cursor-pointer" onclick="window.location.href='${item.url}'">
+                                return `<div class="p-2 border-bottom cursor-pointer" onclick="window.location.href='${item.url}'">
                                     <strong>Book:</strong> ${item.title}
                                 </div>`;
                             } else {
-                                return `<div class="p-2 hover:bg-gray-100 cursor-pointer" onclick="window.location.href='${item.url}'">
+                                return `<div class="p-2 border-bottom cursor-pointer" onclick="window.location.href='${item.url}'">
                                     <strong>Author:</strong> ${item.name}
                                 </div>`;
                             }
                         }).join('');
-                        suggestionsDiv.classList.remove('hidden');
+                        suggestionsDiv.classList.remove('d-none');
                     } else {
-                        suggestionsDiv.classList.add('hidden');
+                        suggestionsDiv.classList.add('d-none');
                     }
                 });
         }, 300);
@@ -170,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hide suggestions when clicking outside
     document.addEventListener('click', function(e) {
         if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
-            suggestionsDiv.classList.add('hidden');
+            suggestionsDiv.classList.add('d-none');
         }
     });
 });
