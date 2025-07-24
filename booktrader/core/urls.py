@@ -23,4 +23,5 @@ urlpatterns = [
     path("", MainView.as_view(), name="index"),
     re_path(r"^api/", include("api.urls")),
     path("users/", include("users.urls")),
+    path("books/", include("books.urls")),
 ]

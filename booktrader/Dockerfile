@@ -12,7 +12,7 @@ RUN pip install --upgrade pip
 
 # Set environment variables for Django
 ENV PYTHONPATH /booktrader/
-ENV DJANGO_SETTINGS_MODULE booktrader.settings
+ENV DJANGO_SETTINGS_MODULE core.settings
 ENV DEBUG=True
 
 # Set working directory for the Django project

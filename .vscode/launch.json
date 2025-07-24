@@ -10,7 +10,7 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "booktrader.asgi:application",
+                "core.asgi:application",
                 "--host", "0.0.0.0",
                 "--port", "8000",
                 "--reload"
@@ -20,7 +20,8 @@
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}/booktrader",
             "env": {
-                "DJANGO_DEBUG": "True"
+                "DJANGO_DEBUG": "True",
+                "PYTHONPATH": "${workspaceFolder}/booktrader"
             }
         },
         {
