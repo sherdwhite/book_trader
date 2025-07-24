@@ -8,8 +8,13 @@
             <li><h6 class="dropdown-header">{{ user.username }}</h6></li>
             <li><hr class="dropdown-divider"></li>
             <li>
-                <form hx-post="{% url 'users:logout' %}" 
-                      hx-target="#user-section" 
+                <a class="dropdown-item" href="{% url 'users:2fa:setup' %}">
+                    🔐 Two-Factor Auth
+                </a>
+            </li>
+            <li>
+                <form hx-post="{% url 'users:logout' %}"
+                      hx-target="#user-section"
                       hx-swap="outerHTML"
                       style="margin: 0;">
                     {% csrf_token %}

@@ -1,10 +1,10 @@
 from asgiref.sync import sync_to_async
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.template.loader import render_to_string
+
+from .forms import EmailRequiredUserCreationForm
 
 # Create async versions of auth functions
 aauthenticate = sync_to_async(authenticate)
@@ -12,26 +12,57 @@ alogin = sync_to_async(login)
 alogout = sync_to_async(logout)
 
 
+# Session access helpers for async views
+def set_session_values(request, **kwargs):
+    """Synchronous helper to set multiple session values."""
+    for key, value in kwargs.items():
+        request.session[key] = value
+
+
 async def login_view(request):
-    """Handle login form submission via HTMX"""
+    """Handle login form submission via HTMX - now includes 2FA flow"""
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
 
         user = await aauthenticate(request, username=username, password=password)
         if user is not None:
-            await alogin(request, user)
-            # Return updated navbar partial - target the entire user section
-            html = await sync_to_async(render_to_string)(
-                "users/navbar_user_section.html", {"user": user}, request=request
-            )
+            # Check if user account is active (email verified)
+            if not user.is_active:
+                html = await sync_to_async(render_to_string)(
+                    "users/login_form.html",
+                    {
+                        "error": "Please verify your email address before logging in. Check your email for the verification code."
+                    },
+                    request=request,
+                )
+                return HttpResponse(html)
 
-            # Use HTMX to trigger a page refresh after successful login
-            response = HttpResponse(html)
-            response["HX-Trigger"] = "loginSuccess"
-            response["HX-Retarget"] = "#user-section"
-            response["HX-Reswap"] = "outerHTML"
-            return response
+            # Check if user has 2FA enabled (all users should have it after registration)
+            from django_otp.plugins.otp_email.models import EmailDevice
+
+            try:
+                device = await sync_to_async(EmailDevice.objects.get)(
+                    user=user, name="primary"
+                )
+                # 2FA is enabled, redirect to 2FA flow
+                from .views_2fa import send_2fa_code
+
+                return await send_2fa_code(request)
+            except EmailDevice.DoesNotExist:
+                # This shouldn't happen with new registration flow, but handle legacy users
+                await alogin(request, user)
+                # Return updated navbar partial - target the entire user section
+                html = await sync_to_async(render_to_string)(
+                    "users/navbar_user_section.html", {"user": user}, request=request
+                )
+
+                # Use HTMX to trigger a page refresh after successful login
+                response = HttpResponse(html)
+                response["HX-Trigger"] = "loginSuccess"
+                response["HX-Retarget"] = "#user-section"
+                response["HX-Reswap"] = "outerHTML"
+                return response
         else:
             # Return just the form content with error message
             html = await sync_to_async(render_to_string)(
@@ -60,27 +91,26 @@ async def logout_view(request):
 
 
 async def register_view(request):
-    """Handle user registration"""
+    """Handle user registration with mandatory email verification"""
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = EmailRequiredUserCreationForm(request.POST)
         if await sync_to_async(form.is_valid)():
-            user = await sync_to_async(form.save)()
-            # Set first name if provided
-            first_name = request.POST.get("first_name", "").strip()
-            if first_name:
-                user.first_name = first_name
-                await sync_to_async(user.save)()
+            # Save user as inactive
+            user = await sync_to_async(form.save)(commit=True)
 
-            username = form.cleaned_data.get("username")
-            await sync_to_async(messages.success)(
-                request, f"Account created for {username}!"
+            # Store user info in session for email verification
+            await sync_to_async(set_session_values)(
+                request,
+                pending_verification_user_id=user.pk,  # Use pk instead of id
+                pending_verification_email=user.email,
             )
 
-            # Log the user in automatically
-            await alogin(request, user)
-            return redirect("index")  # Redirect to main page
+            # Redirect to email verification step
+            from .views_email_verification import send_verification_email
+
+            return await send_verification_email(request)
     else:
-        form = UserCreationForm()
+        form = EmailRequiredUserCreationForm()
 
     return await sync_to_async(render)(request, "users/register.html", {"form": form})
 

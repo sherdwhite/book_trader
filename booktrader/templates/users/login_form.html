@@ -1,24 +1,24 @@
 <!-- Login form partial for dropdown -->
-<form hx-post="{% url 'users:login' %}" 
-      hx-target="closest .dropdown-menu" 
+<form hx-post="{% url 'users:2fa:send_code' %}"
+      hx-target="closest .dropdown-menu"
       hx-swap="innerHTML"
       class="px-3 py-2">
     {% csrf_token %}
-    
+
     <div class="mb-2">
         <label for="username" class="form-label small">Username</label>
-        <input type="text" 
-               class="form-control form-control-sm {% if error %}is-invalid{% endif %}" 
-               name="username" 
-               id="username" 
+        <input type="text"
+               class="form-control form-control-sm {% if error %}is-invalid{% endif %}"
+               name="username"
+               id="username"
                required>
     </div>
     <div class="mb-3">
         <label for="password" class="form-label small">Password</label>
-        <input type="password" 
-               class="form-control form-control-sm {% if error %}is-invalid{% endif %}" 
-               name="password" 
-               id="password" 
+        <input type="password"
+               class="form-control form-control-sm {% if error %}is-invalid{% endif %}"
+               name="password"
+               id="password"
                required>
         {% if error %}
             <div class="invalid-feedback" style="font-size: 0.75rem;">

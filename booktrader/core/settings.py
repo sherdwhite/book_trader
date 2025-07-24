@@ -44,6 +44,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    # django-otp apps
+    "django_otp",
+    "django_otp.plugins.otp_email",
+    # Local apps
     "api.apps.ApiConfig",
     "books.apps.BooksConfig",
     "users.apps.UsersConfig",
@@ -57,6 +61,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django_otp.middleware.OTPMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -185,3 +190,27 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# django-otp settings
+OTP_EMAIL_SENDER = os.environ.get("OTP_EMAIL_SENDER", "noreply@booktrader.com")
+OTP_EMAIL_TOKEN_VALIDITY = int(
+    os.environ.get("OTP_EMAIL_TOKEN_VALIDITY", "300")
+)  # 5 minutes
+OTP_EMAIL_THROTTLE_FACTOR = int(os.environ.get("OTP_EMAIL_THROTTLE_FACTOR", "1"))
+
+# Email settings for OTP (using console backend for development)
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    # Production email settings - configure these environment variables
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = os.environ.get("EMAIL_HOST")
+    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+    EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True").lower() in (
+        "true",
+        "1",
+        "yes",
+    )
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+    DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", OTP_EMAIL_SENDER)
