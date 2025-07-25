@@ -1,8 +1,8 @@
+from books.models import Author, Book, Publisher, Rating
 from django.contrib.auth.models import User
+
 # from django.db.models import Avg
 from rest_framework import serializers
-
-from books.models import Book, Publisher, Author, Rating
 
 
 class UserSerializer(serializers.ModelSerializer):
