@@ -24,23 +24,25 @@ class TestPublisherEndpoints(APITestCase):
         """GET /api/publisher/{publisher.pk}/ should return the publisher"""
         response = self.client.get(self.detail_url)
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["pk"] == self.publisher.pk
-        assert response.data["name"] == self.publisher.name
+        assert response.data["pk"] == self.publisher.pk  # type: ignore
+        assert response.data["name"] == self.publisher.name  # type: ignore
 
     def test_patch_publisher(self):
         """PATCH /api/publisher/{publisher.pk}/ should update the publisher"""
         expected_name = "We Make Books"
         response = self.client.patch(self.detail_url, data={"name": expected_name})
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["name"] == expected_name
+        assert response.data["name"] == expected_name  # type: ignore
 
     def test_put_publisher(self):
         """PUT /api/publisher/{publisher.pk}/ should update the publisher"""
         expected_name = "We Make Books"
         self.full_data["name"] = expected_name
         response = self.client.put(self.detail_url, data=self.full_data)
-        assert response.data["name"] == expected_name
-        assert Publisher.objects.first().name == expected_name
+        assert response.data["name"] == expected_name  # type: ignore
+        updated_publisher = Publisher.objects.first()
+        assert updated_publisher is not None
+        assert updated_publisher.name == expected_name
 
     def test_delete_publisher(self):
         """DELETE /api/publisher/{publisher.pk}/ should delete the publisher"""
@@ -66,6 +68,8 @@ class TestPublisherEndpoints(APITestCase):
         response = self.client.get(self.list_url)
 
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == expected_publishers
-        for publisher, response_item in zip(Publisher.objects.all(), response.data):
+        assert len(response.data) == expected_publishers  # type: ignore
+        # type: ignore on next line for pylance response.data issue
+        response_data = response.data  # type: ignore
+        for publisher, response_item in zip(Publisher.objects.all(), response_data):
             assert response_item["pk"] == publisher.pk

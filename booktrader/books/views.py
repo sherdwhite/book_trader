@@ -102,8 +102,14 @@ async def book_detail_view(request, book_id):
     )
 
     # Get average rating and rating count concurrently
-    avg_rating_task = sync_to_async(book.ratings.aggregate(avg_rating=Avg("rating")))()
-    rating_count_task = sync_to_async(book.ratings.count)()
+    # type: ignore on next lines for pylance reverse relationship issue
+    ratings_manager = book.ratings  # type: ignore
+
+    async def get_avg_rating():
+        return await sync_to_async(ratings_manager.aggregate)(avg_rating=Avg("rating"))
+
+    avg_rating_task = get_avg_rating()
+    rating_count_task = sync_to_async(ratings_manager.count)()
 
     # Wait for both operations to complete
     avg_rating_result, rating_count = await asyncio.gather(

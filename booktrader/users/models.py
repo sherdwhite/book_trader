@@ -112,4 +112,5 @@ class UserReputation(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"{self.user.username}: {self.get_reputation_type_display()} ({self.points:+.1f})"
+        reputation_display = self.get_reputation_type_display()  # type: ignore
+        return f"{self.user.username}: {reputation_display} ({self.points:+.1f})"

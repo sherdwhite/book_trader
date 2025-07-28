@@ -51,7 +51,10 @@ class Trade(models.Model):
         max_digits=8,
         decimal_places=2,
         default=0.00,
-        help_text="Cash amount (+ means initiator pays responder, - means responder pays initiator)",
+        help_text=(
+            "Cash amount (+ means initiator pays responder, "
+            "- means responder pays initiator)"
+        ),
     )
 
     # Timestamps
@@ -121,7 +124,8 @@ class TradeItem(models.Model):
         unique_together = ["trade", "book", "owner"]
 
     def __str__(self):
-        return f"{self.book.title} ({self.owner.username}) - {self.get_condition_display()}"
+        condition_display = self.get_condition_display()  # type: ignore
+        return f"{self.book.title} ({self.owner.username}) - {condition_display}"
 
 
 class TradeMessage(models.Model):

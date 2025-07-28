@@ -39,32 +39,35 @@ class TestBookEndpoints(APITestCase):
         """GET /api/book/{book.pk}/ should return the book"""
         response = self.client.get(self.detail_url)
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["pk"] == self.book.pk
-        assert response.data["title"] == self.book.title
-        assert response.data["publisher"] == self.book.publisher.pk
-        assert response.data["authors"] == [a.pk for a in self.book.authors.all()]
+        assert response.data["pk"] == self.book.pk  # type: ignore
+        assert response.data["title"] == self.book.title  # type: ignore
+        assert response.data["publisher"] == self.book.publisher.pk  # type: ignore
+        expected_authors = [a.pk for a in self.book.authors.all()]
+        assert response.data["authors"] == expected_authors  # type: ignore
 
     def test_patch_book(self):
         """PATCH /api/book/{book.pk}/ should update the book"""
         expected_description = (
-            "In a hole there lived a creepy, grey alien named Sonya Grey. Not a backward, hot, "
-            "tall hole, filled with stamps and a greasy smell, nor yet a violent, charming, "
-            "pretty hole with nothing in it to sit down on or to eat: it was an alien-hole, "
-            "and that means shelter."
+            "In a hole there lived a creepy, grey alien named Sonya Grey. "
+            "Not a backward, hot, tall hole, filled with stamps and a greasy smell, "
+            "nor yet a violent, charming, pretty hole with nothing in it to sit "
+            "down on or to eat: it was an alien-hole, and that means shelter."
         ).strip()
         response = self.client.patch(
             self.detail_url, data={"description": expected_description}
         )
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["description"] == expected_description
+        assert response.data["description"] == expected_description  # type: ignore
 
     def test_put_book(self):
         """PUT /api/book/{book.pk}/ should update the book"""
         expected_description = "Totally informative description"
         self.full_data["description"] = expected_description
         response = self.client.put(self.detail_url, data=self.full_data)
-        assert response.data["description"] == expected_description
-        assert Book.objects.first().description == expected_description
+        assert response.data["description"] == expected_description  # type: ignore
+        updated_book = Book.objects.first()
+        assert updated_book is not None
+        assert updated_book.description == expected_description
 
     def test_delete_book(self):
         """DELETE /api/book/{book.pk}/ should delete the book"""
@@ -94,6 +97,8 @@ class TestBookEndpoints(APITestCase):
         response = self.client.get(self.list_url)
 
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == expected_books
-        for book, response_item in zip(Book.objects.all(), response.data):
+        assert len(response.data) == expected_books  # type: ignore
+        # type: ignore on next line for pylance response.data issue
+        response_data = response.data  # type: ignore
+        for book, response_item in zip(Book.objects.all(), response_data):
             assert response_item["pk"] == book.pk

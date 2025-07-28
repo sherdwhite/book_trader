@@ -21,26 +21,28 @@ class TestAuthorEndpoints(APITestCase):
         self.list_url = reverse("author-list")
 
     def test_get_author(self):
-        """GET /api/author/\d+/ should return the author"""
+        r"""GET /api/author/\d+/ should return the author"""
         response = self.client.get(self.detail_url)
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["pk"] == self.author.pk
-        assert response.data["name"] == self.author.name
+        assert response.data["pk"] == self.author.pk  # type: ignore
+        assert response.data["name"] == self.author.name  # type: ignore
 
     def test_patch_author(self):
-        """PATCH /api/author/\d+/ should update the author"""
+        r"""PATCH /api/author/\d+/ should update the author"""
         expected_name = "Story-bot"
         response = self.client.patch(self.detail_url, data={"name": expected_name})
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["name"] == expected_name
+        assert response.data["name"] == expected_name  # type: ignore
 
     def test_put_author(self):
         """PUT /api/author/{author.pk}/ should update the author"""
         expected_name = "Story-bot"
         self.full_data["name"] = expected_name
         response = self.client.put(self.detail_url, data=self.full_data)
-        assert response.data["name"] == expected_name
-        assert Author.objects.first().name == expected_name
+        assert response.data["name"] == expected_name  # type: ignore
+        updated_author = Author.objects.first()
+        assert updated_author is not None
+        assert updated_author.name == expected_name
 
     def test_delete_author(self):
         """DELETE /api/author/{author.pk}/ should delete the author"""
@@ -66,6 +68,8 @@ class TestAuthorEndpoints(APITestCase):
         response = self.client.get(self.list_url)
 
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == expected_authors
-        for author, response_item in zip(Author.objects.all(), response.data):
+        assert len(response.data) == expected_authors  # type: ignore
+        # type: ignore on next line for pylance response.data issue
+        response_data = response.data  # type: ignore
+        for author, response_item in zip(Author.objects.all(), response_data):
             assert response_item["pk"] == author.pk

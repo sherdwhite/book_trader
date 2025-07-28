@@ -99,7 +99,7 @@ class Auction(models.Model):
     @property
     def current_price(self):
         """Get current highest bid or starting price"""
-        highest_bid = self.bids.order_by("-amount").first()
+        highest_bid = self.bids.order_by("-amount").first()  # type: ignore
         return highest_bid.amount if highest_bid else self.starting_price
 
     @property

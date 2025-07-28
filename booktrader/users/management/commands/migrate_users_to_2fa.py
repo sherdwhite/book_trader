@@ -45,10 +45,11 @@ class Command(BaseCommand):
         if users_without_email.exists():
             self.stdout.write(self.style.WARNING("\nUsers without email addresses:"))
             for user in users_without_email:
-                self.stdout.write(f"  - {user.username} (ID: {user.id})")
+                self.stdout.write(f"  - {user.username} (ID: {user.pk})")
             self.stdout.write(
                 self.style.WARNING(
-                    "These users will need to add email addresses before they can log in."
+                    "These users will need to add email addresses "
+                    "before they can log in."
                 )
             )
 
@@ -80,8 +81,10 @@ class Command(BaseCommand):
                             f"  - EmailDevice already exists for {user.username}"
                         )
                 else:
+                    username = user.username
+                    email = user.email
                     self.stdout.write(
-                        f"  ✓ Would create EmailDevice for {user.username} ({user.email})"
+                        f"  ✓ Would create EmailDevice for {username} ({email})"
                     )
                     created_count += 1
 
@@ -99,9 +102,10 @@ class Command(BaseCommand):
         self.stdout.write("\nMigration complete!")
 
         if users_without_email.exists():
+            count = users_without_email.count()
             self.stdout.write(
                 self.style.WARNING(
-                    f"\nNote: {users_without_email.count()} users still need email addresses. "
+                    f"\nNote: {count} users still need email addresses. "
                     "They should update their profiles in the admin interface."
                 )
             )

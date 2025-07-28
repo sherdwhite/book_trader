@@ -68,14 +68,15 @@ async def send_2fa_code(request):
         )
 
     # Import here to avoid circular imports
-    from asgiref.sync import sync_to_async
     from django.contrib.auth import authenticate
 
     aauthenticate = sync_to_async(authenticate)
     user = await aauthenticate(request, username=username, password=password)
 
     if user is not None:
-        if not user.email:
+        user_email = user.email  # type: ignore
+        user_email = user.email  # type: ignore
+        if not user_email:
             return HttpResponse(
                 await sync_to_async(render_to_string)(
                     "users/login_form.html",
@@ -99,13 +100,13 @@ async def send_2fa_code(request):
             # Return the 2FA code entry form
             html = await sync_to_async(render_to_string)(
                 "users/2fa_code_form.html",
-                {"email": user.email},
+                {"email": user_email},
                 request=request,
             )
             return HttpResponse(html)
 
         except Exception as e:
-            logger.error(f"Failed to send 2FA code to {user.email}: {e}")
+            logger.error(f"Failed to send 2FA code to {user_email}: {e}")
             return HttpResponse(
                 await sync_to_async(render_to_string)(
                     "users/login_form.html",
@@ -151,7 +152,7 @@ async def verify_2fa_code(request):
     try:
         from django.contrib.auth.models import User
 
-        user = await sync_to_async(User.objects.get)(id=pending_user_id)
+        user = await sync_to_async(User.objects.get)(pk=pending_user_id)
         device = await sync_to_async(get_or_create_email_device)(user)
 
         # Verify the token

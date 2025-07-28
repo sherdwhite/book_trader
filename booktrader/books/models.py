@@ -185,4 +185,5 @@ class BookCondition(models.Model):
         unique_together = ["book", "owner"]
 
     def __str__(self):
-        return f"{self.book.title} ({self.get_condition_display()}) - {self.owner.username}"
+        condition_display = self.get_condition_display()  # type: ignore
+        return f"{self.book.title} ({condition_display}) - {self.owner.username}"

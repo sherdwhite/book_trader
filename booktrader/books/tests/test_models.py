@@ -30,6 +30,6 @@ class TestBooks(TestCase):
 
         Rating.objects.create(book=self.book, user=self.user, rating=1)
         Rating.objects.create(book=self.book, user=self.user2, rating=5)
-        updated_average_rating = Book.objects.get(id=self.book.id).average_rating
+        updated_average_rating = Book.objects.get(pk=self.book.pk).average_rating
 
         assert updated_average_rating == expected_rating
