@@ -54,7 +54,9 @@ class TestPublisherEndpoints(APITestCase):
     def test_post_publisher(self):
         """POST /api/publisher/ should create a publisher"""
         expected_publishers = Publisher.objects.count() + 1
-        response = self.client.post(self.list_url, data=self.full_data)
+        # Use a different name to avoid unique constraint violation
+        test_data = {"name": "New Publishing House"}
+        response = self.client.post(self.list_url, data=test_data)
         assert response.status_code == status.HTTP_201_CREATED
         assert Publisher.objects.count() == expected_publishers
 

@@ -79,7 +79,10 @@ class TestBookEndpoints(APITestCase):
     def test_post_book(self):
         """POST /api/book/ should create a book"""
         expected_books = Book.objects.count() + 1
-        response = self.client.post(self.list_url, data=self.full_data)
+        # Use a different ISBN to avoid unique constraint violation
+        test_data = self.full_data.copy()
+        test_data["isbn"] = "9876543210987"
+        response = self.client.post(self.list_url, data=test_data)
         assert response.status_code == status.HTTP_201_CREATED
         assert Book.objects.count() == expected_books
 
