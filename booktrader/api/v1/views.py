@@ -31,13 +31,6 @@ class BookViewSet(viewsets.ModelViewSet):
         queryset = queryset.order_by("-average_rating")
         return queryset
 
-    def create(self, request, *args, **kwargs):
-        average_rating = request.data.get("average_rating")
-        if not average_rating:
-            request.data["average_rating"] = 0.0
-
-        return super(BookViewSet, self).create(request, *args, **kwargs)
-
 
 class AuthorViewSet(viewsets.ModelViewSet):
     """API endpoint that allows authors to be viewed or edited."""
@@ -68,8 +61,7 @@ class RatingViewSet(viewsets.ModelViewSet):
                 book_id=self.request.data.get("book"),
                 user_id=self.request.data.get("user"),
             )
-        except ObjectDoesNotExist as ex:
-            # print(ex)
+        except ObjectDoesNotExist:
             rating_pk = self.kwargs.get("pk", None)
             if rating_pk:
                 obj = queryset.get(pk=rating_pk)
@@ -83,12 +75,12 @@ class RatingViewSet(viewsets.ModelViewSet):
         # print('request.data: {}'.format(request.data))
         book_id = request.data.get("book")
         user_id = request.data.get("user")
+        rating = None
         try:
             rating = Rating.objects.get(book_id=book_id, user_id=user_id)
             # print('rating: {}'.format(rating))
-        except ObjectDoesNotExist as ex:
-            # print(ex)
-            rating = None
+        except ObjectDoesNotExist:
+            pass
 
         if not rating:
             return super(RatingViewSet, self).create(request, *args, **kwargs)
@@ -101,8 +93,7 @@ class RatingViewSet(viewsets.ModelViewSet):
             rating = Rating.objects.get(id=rating_id)
             book_id = rating.book.id
             book = Book.objects.get(id=book_id)
-        except ObjectDoesNotExist as ex:
-            # print(ex)
+        except ObjectDoesNotExist:
             book_id = None
             book = None
         instance.delete()
