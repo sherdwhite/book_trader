@@ -32,7 +32,6 @@ class TestUserProfileModel(TestCase):
 
     def test_full_address_property(self):
         """Test full_address property"""
-        # The actual implementation only includes non-empty parts
         expected = "123 Main St, Apt 4B, Test City, TS, 12345"
         assert self.profile.full_address == expected
 
@@ -47,7 +46,7 @@ class TestUserProfileModel(TestCase):
             country="US",
         )
 
-        expected = "City, ST"  # Country not included in full_address
+        expected = "City, ST"
         assert minimal_profile.full_address == expected
 
     def test_full_address_property_with_postal_code(self):
@@ -62,7 +61,7 @@ class TestUserProfileModel(TestCase):
             country="US",
         )
 
-        expected = "City, ST, 54321"  # Country not included in full_address
+        expected = "City, ST, 54321"
         assert profile.full_address == expected
 
 

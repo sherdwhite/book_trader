@@ -52,13 +52,13 @@ class TestTradeModel(TestCase):
         self.trade.expires_at = timezone.now() - timedelta(days=1)
         self.trade.status = "accepted"
         self.trade.save()
-        assert self.trade.is_expired is False
+        assert not self.trade.is_expired
 
     def test_is_expired_property_no_expiry(self):
         """Test is_expired property when no expiry is set"""
         self.trade.expires_at = None
         self.trade.save()
-        # When expires_at is None, the property returns a falsy value
+        # When expires_at is None, should not be expired
         assert not self.trade.is_expired
 
     def test_can_be_accepted_property_proposed(self):
