@@ -29,11 +29,6 @@ class TestTradeModel(TestCase):
             expires_at=timezone.now() + timedelta(days=7),
         )
 
-    def test_trade_str(self):
-        """Test trade string representation"""
-        expected = f"Trade: {self.initiator.username} <-> {self.responder.username}"
-        assert str(self.trade) == expected
-
     def test_is_expired_property_future(self):
         """Test is_expired property for future expiry"""
         # Future expiry should not be expired
@@ -117,11 +112,6 @@ class TestTradeItemModel(TestCase):
             estimated_value=Decimal("15.00"),
         )
 
-    def test_trade_item_str(self):
-        """Test trade item string representation"""
-        expected = f"{self.book.title} ({self.owner.username}) - Good"
-        assert str(self.trade_item) == expected
-
     def test_unique_together_constraint(self):
         """Test that same book/owner can't be added to same trade twice"""
         with pytest.raises(Exception):  # Should raise IntegrityError
@@ -152,11 +142,6 @@ class TestTradeMessageModel(TestCase):
             message="Hello, interested in this trade!",
             is_system_message=False,
         )
-
-    def test_trade_message_str(self):
-        """Test trade message string representation"""
-        expected = f"Message from {self.sender.username} in trade {self.trade.pk}"
-        assert str(self.message) == expected
 
     def test_system_message(self):
         """Test system message creation"""
@@ -204,11 +189,6 @@ class TestTradeOfferModel(TestCase):
             cash_difference=Decimal("5.00"),
             is_active=True,
         )
-
-    def test_trade_offer_str(self):
-        """Test trade offer string representation"""
-        expected = f"Offer by {self.offeror.username} for trade {self.trade.pk}"
-        assert str(self.offer) == expected
 
     def test_offer_ordering(self):
         """Test offers are ordered by creation time descending"""

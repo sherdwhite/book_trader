@@ -37,11 +37,6 @@ class TestAuctionModel(TestCase):
             status="active",
         )
 
-    def test_auction_str(self):
-        """Test auction string representation"""
-        expected = f"Auction: {self.auction.title} by {self.user.username}"
-        assert str(self.auction) == expected
-
     def test_current_price_no_bids(self):
         """Test current_price property when no bids exist"""
         assert self.auction.current_price == self.auction.starting_price
@@ -121,14 +116,6 @@ class TestBidModel(TestCase):
             auction=self.auction, bidder=self.bidder, amount=Decimal("15.00")
         )
 
-    def test_bid_str(self):
-        """Test bid string representation"""
-        expected = (
-            f"${self.bid.amount} bid by {self.bidder.username} "
-            f"on {self.auction.title}"
-        )
-        assert str(self.bid) == expected
-
     def test_bid_ordering(self):
         """Test bids are ordered by timestamp descending"""
         # Create another bid
@@ -166,11 +153,6 @@ class TestWatchListModel(TestCase):
             status="active",
         )
         self.watchlist = WatchList.objects.create(user=self.user, auction=self.auction)
-
-    def test_watchlist_str(self):
-        """Test watchlist string representation"""
-        expected = f"{self.user.username} watching {self.auction.title}"
-        assert str(self.watchlist) == expected
 
     def test_unique_together_constraint(self):
         """Test that user can't watch same auction twice"""

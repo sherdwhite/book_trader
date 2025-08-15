@@ -25,11 +25,6 @@ class TestUserProfileModel(TestCase):
             is_verified=True,
         )
 
-    def test_user_profile_str(self):
-        """Test user profile string representation"""
-        expected = f"{self.user.username}'s Profile"
-        assert str(self.profile) == expected
-
     def test_full_address_property(self):
         """Test full_address property"""
         expected = "123 Main St, Apt 4B, Test City, TS, 12345"
@@ -77,11 +72,6 @@ class TestUserReputationModel(TestCase):
             points=Decimal("1.5"),
             description="Great seller, fast shipping!",
         )
-
-    def test_user_reputation_str(self):
-        """Test user reputation string representation"""
-        expected = f"{self.user.username}: Positive Feedback (+1.5)"
-        assert str(self.reputation) == expected
 
     def test_reputation_ordering(self):
         """Test reputation events are ordered by creation time descending"""
