@@ -18,7 +18,16 @@ services:
       # Set to 'production' for production-level connection pooling
       - DJANGO_ENV=development
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    # Health check to monitor Django application
+    # Benefits: Automatic restart on failure, better orchestration
+    healthcheck:
+      test: [ "CMD", "python", "manage.py", "check", "--database", "default" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     # entrypoint and command are now handled by the entrypoint.sh script
     # entrypoint sets the entrypoint for the container to the python3.12 executable
     # entrypoint: /usr/local/bin/python3.12
@@ -41,6 +50,13 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
+    # Health check to monitor PostgreSQL database
+    # Benefits: Ensures database is ready before starting dependent services
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   # tests:
   #   build: .
   #   volumes:
@@ -50,4 +66,5 @@ services:
 volumes:
   postgres_data:
   static:
+
 

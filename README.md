@@ -51,7 +51,11 @@ The DevContainer automatically configures:
 #### Setup and Run
 
 ```bash
-# Build and start services
+# Quick setup using Makefile (recommended)
+make setup
+
+# Or manual setup:
+./setup-env.sh  # Configure environment (if available)
 docker compose build
 docker compose up -d
 
@@ -62,6 +66,39 @@ docker compose exec booktrader python manage.py createsuperuser
 
 # View logs
 docker compose logs -f booktrader
+```
+
+#### Makefile Commands
+
+For easier development, use the included Makefile:
+
+```bash
+# Development workflow
+make help         # Show all available commands
+make build        # Build all services
+make up           # Start services (foreground)
+make up-d         # Start services (background)
+make down         # Stop services
+make logs         # View all logs
+make logs SERVICE=booktrader  # View specific service logs
+
+# Django management
+make shell        # Access Django shell
+make migrate      # Run database migrations
+make collectstatic # Collect static files
+make superuser    # Create Django superuser
+make test         # Run tests
+
+# Monitoring
+make health       # Check service status
+
+# Cleanup
+make clean        # Remove containers and volumes
+make clean-all    # Complete cleanup including images
+
+# Quick setup
+make setup        # Complete project setup with environment
+make dev-setup    # Quick development setup (no env config)
 ```
 
 ### Option 3: Local Development
