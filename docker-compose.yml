@@ -28,12 +28,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    # entrypoint and command are now handled by the entrypoint.sh script
-    # entrypoint sets the entrypoint for the container to the python3.12 executable
-    # entrypoint: /usr/local/bin/python3.12
-    # entrypoint: /bin/sh -c
-    # # command runs as arguments to the entrypoint
-    # command: "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
   nginx:
     build:
       context: ./nginx
@@ -44,6 +38,13 @@ services:
     depends_on:
       - booktrader
       - db
+    # Health check for nginx service
+    # Benefits: Ensures web server is responding to requests
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
   db:
     image: postgres:17-alpine
     volumes:
