@@ -48,6 +48,15 @@ This document explains all environment variables used in the BookTrader applicat
 | `DB_CONN_MAX_AGE` | `600` (production) / `300` (development) | Connection max age in seconds | ❌ No |
 | `DB_CONNECT_TIMEOUT` | `30` (production) / `10` (development) | Connection timeout in seconds | ❌ No |
 
+### Docker and Development Settings
+
+| Variable | Default | Description | Required |
+|----------|---------|-------------|----------|
+| `DJANGO_SETTINGS_MODULE` | `core.settings` | Django settings module | ❌ No |
+| `PYTHONDONTWRITEBYTECODE` | `1` | Prevent Python from writing .pyc files | ❌ No |
+| `PYTHONUNBUFFERED` | `1` | Force Python stdout/stderr to be unbuffered | ❌ No |
+| `PYTHONPATH` | `/booktrader/` | Python module search path | ❌ No |
+
 ### Two-Factor Authentication (2FA)
 
 | Variable | Default | Description | Required |

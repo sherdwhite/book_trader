@@ -68,6 +68,21 @@ docker compose exec booktrader python manage.py createsuperuser
 docker compose logs -f booktrader
 ```
 
+#### Docker Features
+
+The Docker setup includes:
+- **Health Checks**: Automatic service monitoring and restart on failure
+- **Live Code Reloading**: Code changes reflect immediately (development mode)
+- **Optimized Static Files**: Efficient collection without unnecessary deletions
+- **Database Access**: Direct PostgreSQL access on port 5432 for debugging
+- **Nginx Optimization**: Gzip compression, static file caching, and performance tuning
+
+**Service Health Monitoring:**
+```bash
+make health       # Check if all services are healthy
+docker compose ps # View detailed service status
+```
+
 #### Makefile Commands
 
 For easier development, use the included Makefile:
@@ -90,7 +105,7 @@ make superuser    # Create Django superuser
 make test         # Run tests
 
 # Monitoring
-make health       # Check service status
+make health       # Check service status and health checks
 
 # Cleanup
 make clean        # Remove containers and volumes
@@ -175,7 +190,10 @@ The application uses PostgreSQL in development and production. Connection poolin
 Multiple options for running tests:
 
 ```bash
-# Using Docker Compose
+# Using Makefile (recommended)
+make test
+
+# Using Docker Compose directly
 docker compose exec booktrader python manage.py test
 
 # In DevContainer or local environment
@@ -183,6 +201,9 @@ python manage.py test
 
 # Run specific app tests
 python manage.py test books.tests
+
+# Check service health before running tests
+make health
 ```
 
 ### Management Commands
@@ -236,16 +257,26 @@ For production deployment:
    cp .env.production.example .env.production
    ```
 
-2. Update production settings:
-   - Generate new `DJANGO_SECRET_KEY`
+2. Update production settings in `.env.production`:
+   - Generate new `DJANGO_SECRET_KEY` (use https://djecrety.ir/)
    - Set `DJANGO_DEBUG=False`
    - Configure domain in `DJANGO_ALLOWED_HOSTS`
-   - Set secure database credentials
-   - Configure static file serving
+   - Set secure database credentials in `DB_PASSWORD`
+   - Configure email settings for 2FA functionality
+   - Set up static file serving (CDN recommended)
 
-3. Use production Docker Compose:
+3. Use production Docker Compose with health checks:
    ```bash
    docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+   ```
+
+4. Monitor deployment:
+   ```bash
+   # Check service health
+   docker compose -f docker-compose.yml -f docker-compose.prod.yml ps
+
+   # View logs
+   docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f
    ```
 
 ## Contributing

@@ -44,10 +44,30 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 ```
 ## Monitoring
 
-Monitor your connection pool with these Django management commands:
+Monitor your connection pool and database health:
+
 ```bash
-# Check database connectivity
+# Check database connectivity and Django health
 python manage.py check --database default
+
+# Monitor service health (includes database)
+make health
+
+# Check Docker service status
+docker compose ps
+
+# View database logs
+docker compose logs db
+```
+
+### Health Checks
+
+The application includes automatic health checks:
+- **Database**: `pg_isready -U postgres` (every 10 seconds)
+- **Django**: `python manage.py check --database default` (every 30 seconds)
+- **Automatic Recovery**: Unhealthy containers are automatically restarted
+
+Health checks ensure your database connections are working before the application starts serving requests.
 
 # Monitor active connections (requires database access)
 python manage.py dbshell
