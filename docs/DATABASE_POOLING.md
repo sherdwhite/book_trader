@@ -4,10 +4,10 @@ This document explains the database connection pooling settings added to the Boo
 
 ## What is Connection Pooling?
 
-Connection pooling is a technique used to manage database connections efficiently by:
-- Reusing existing connections instead of creating new ones for each request
-- Maintaining a pool of active connections ready for use
-- Automatically closing idle connections after a timeout period
+Connection pooling manages database connections by:
+- Reusing existing connections instead of creating new ones
+- Maintaining a pool of active connections
+- Closing idle connections after a timeout period
 
 ## Configuration
 
@@ -62,12 +62,10 @@ docker compose logs db
 
 ### Health Checks
 
-The application includes automatic health checks:
+The application includes health checks:
 - **Database**: `pg_isready -U postgres` (every 10 seconds)
 - **Django**: `python manage.py check --database default` (every 30 seconds)
-- **Automatic Recovery**: Unhealthy containers are automatically restarted
-
-Health checks ensure your database connections are working before the application starts serving requests.
+- **Recovery**: Unhealthy containers are restarted
 
 # Monitor active connections (requires database access)
 python manage.py dbshell

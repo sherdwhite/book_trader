@@ -1,15 +1,6 @@
 # Book Trader
 
-A Django-based book trading platform that allows users to list, discover, and trade books with other users. The application features user authentication, book management, auction functionality, and a RESTful API.
-
-## Features
-
-- **User Management**: Registration, authentication, and user profiles
-- **Book Catalog**: Add, edit, and browse books with detailed information
-- **Trading System**: Post books for trade and negotiate with other users
-- **Auction System**: Bid on books through an auction mechanism
-- **REST API**: Full API access for all major functionality
-- **Admin Interface**: Django admin for content management
+Django-based book trading platform with user authentication, book management, auctions, and REST API.
 
 ## Quick Start
 
@@ -32,10 +23,10 @@ Choose your preferred development environment:
    python manage.py runserver 0.0.0.0:8000
    ```
 
-The DevContainer automatically configures:
-- Python environment with all dependencies
+The DevContainer includes:
+- Python environment with dependencies
 - PostgreSQL database
-- VS Code extensions for Django development
+- VS Code extensions
 - Debug configurations
 
 ### Option 2: Docker Compose
@@ -68,19 +59,11 @@ docker compose exec booktrader python manage.py createsuperuser
 docker compose logs -f booktrader
 ```
 
-#### Docker Features
+#### Service Status
 
-The Docker setup includes:
-- **Health Checks**: Automatic service monitoring and restart on failure
-- **Live Code Reloading**: Code changes reflect immediately (development mode)
-- **Optimized Static Files**: Efficient collection without unnecessary deletions
-- **Database Access**: Direct PostgreSQL access on port 5432 for debugging
-- **Nginx Optimization**: Gzip compression, static file caching, and performance tuning
-
-**Service Health Monitoring:**
 ```bash
-make health       # Check if all services are healthy
-docker compose ps # View detailed service status
+make health       # Check service status
+docker compose ps # View service status
 ```
 
 #### Makefile Commands
@@ -172,18 +155,16 @@ API versioning is implemented - see [API Versioning Guide](docs/API_VERSIONING.m
 
 ## Development
 
-### VS Code Integration
+### VS Code Configuration
 
-The project includes VS Code configuration for optimal development experience:
+- Launch configurations for Django debugging
+- Task configurations for management commands
+- Recommended extensions
+- DevContainer setup
 
-- **Launch Configurations**: Debug Django server and shell
-- **Task Configurations**: Common Django management commands
-- **Extensions**: Recommended extensions for Django development
-- **DevContainer**: Complete development environment setup
+### Database
 
-### Database Management
-
-The application uses PostgreSQL in development and production. Connection pooling is configured automatically based on the environment. See [Database Pooling Guide](docs/DATABASE_POOLING.md) for details.
+Uses PostgreSQL with connection pooling. See [Database Pooling Guide](docs/DATABASE_POOLING.md) for configuration details.
 
 ### Running Tests
 

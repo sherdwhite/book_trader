@@ -4,12 +4,7 @@ This document explains how static files are handled in the Book Trader project.
 
 ## Current Setup
 
-The project uses **Bootstrap 5.3.3 via CDN** for CSS framework functionality. This approach provides:
-- ✅ Always up-to-date files
-- ✅ Fast loading via CDN caching
-- ✅ No local file management needed
-- ✅ Works consistently across all environments (DevContainer, Docker, local)
-- ✅ No issues with files being deleted during container rebuilds
+The project uses **Bootstrap 5.3.3 via CDN** for CSS framework functionality.
 
 ## Static Files Configuration
 
@@ -125,4 +120,4 @@ If you need to use local Bootstrap files (for offline development or security re
    python manage.py collectstatic
    ```
 
-**Note:** The CDN approach is recommended for most use cases as it avoids file management issues and provides better performance.
+**Note:** CDN approach avoids local file management.
